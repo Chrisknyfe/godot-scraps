@@ -43,7 +43,7 @@ func _on_MissArea_input_event( camera, event, click_position, click_normal, shap
 		
 
 func _on_QuitButton_pressed():
-	
+	get_tree().quit()
 
 
 func _on_TryAgainButton_pressed():

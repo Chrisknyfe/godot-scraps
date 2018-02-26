@@ -10,7 +10,7 @@ config_version=3
 
 [application]
 
-config/name="gd_scrap_scripting"
+config/name="Cube Clicker"
 run/main_scene="res://TitleScreen.tscn"
 config/icon="res://icon.png"
 

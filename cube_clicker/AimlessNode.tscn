@@ -6,7 +6,7 @@
 [ext_resource path="res://Unique.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://song.ogg" type="AudioStream" id=5]
 
-[sub_resource type="ProceduralSky" id=2]
+[sub_resource type="ProceduralSky" id=1]
 
 radiance_size = 4
 sky_top_color = Color( 0.0470588, 0.454902, 0.976471, 1 )
@@ -27,10 +27,10 @@ sun_energy = 16.0
 texture_size = 2
 _sections_unfolded = [ "Ground" ]
 
-[sub_resource type="Environment" id=3]
+[sub_resource type="Environment" id=2]
 
 background_mode = 2
-background_sky = SubResource( 2 )
+background_sky = SubResource( 1 )
 background_sky_custom_fov = 0.0
 background_color = Color( 0, 0, 0, 1 )
 background_energy = 1.0
@@ -107,7 +107,7 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Background" ]
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=3]
 
 size = 16
 use_mipmaps = false
@@ -119,7 +119,7 @@ _sections_unfolded = [ "Font", "Settings" ]
 
 plane = Plane( 0, 1, 0, 0 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=5]
 
 size = 16
 use_mipmaps = false
@@ -127,7 +127,7 @@ use_filter = false
 font_data = ExtResource( 4 )
 _sections_unfolded = [ "Font", "Settings" ]
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=6]
 
 size = 40
 use_mipmaps = false
@@ -159,7 +159,7 @@ far = 100.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="2"]
 
-environment = SubResource( 3 )
+environment = SubResource( 2 )
 
 [node name="Watermark" type="TextureRect" parent="." index="3"]
 
@@ -195,7 +195,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "Speed"
 percent_visible = 1.0
@@ -282,7 +282,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.03125, 1, 0.0463867, 1 )
 text = "Clicks"
 percent_visible = 1.0
@@ -321,7 +321,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "You Lose."
