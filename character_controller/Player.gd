@@ -26,19 +26,15 @@ func _physics_process(delta):
 	direction.y = 0
 	direction = direction.normalized()
 	direction = direction * speed * delta
-	
-	
-#	velocity = velocity.linear_interpolate(direction, 0.5)
 #
 #	if velocity.y > 0:
 #		gravity = -20
 #	else:
 #		gravity = -30
 	
+	direction.y = velocity.y
+	velocity = velocity.linear_interpolate(direction, 0.5)
 	velocity.y += gravity * delta
-	velocity.x = direction.x
-	velocity.z = direction.z
-	
 	velocity = move_and_slide(velocity, Vector3(0, 1, 0))
 #
 #	if is_on_floor() and Input.is_key_pressed(KEY_SPACE):
