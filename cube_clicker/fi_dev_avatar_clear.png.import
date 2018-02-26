@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fidevel_128.png-e65feed3cf872ec35b3226b9d3d11063.stex"
+path="res://.import/fi_dev_avatar_clear.png-694171d301fad6c56830ce0ebd53ca6d.stex"
 
 [deps]
 
-source_file="res://fidevel_128.png"
-source_md5="fae20d94361457615058a99675314f0a"
+source_file="res://fi_dev_avatar_clear.png"
+source_md5="7059801cd2fb61d7b8600bb6cdcc04f4"
 
-dest_files=[ "res://.import/fidevel_128.png-e65feed3cf872ec35b3226b9d3d11063.stex" ]
-dest_md5="da1b7c15544e9829a84cc5964eb248b9"
+dest_files=[ "res://.import/fi_dev_avatar_clear.png-694171d301fad6c56830ce0ebd53ca6d.stex" ]
+dest_md5="72708a1e8ff2adca5c0fc882b1404c69"
 
 [params]
 
