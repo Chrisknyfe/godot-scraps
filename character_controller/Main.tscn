@@ -6,7 +6,7 @@
 [ext_resource path="res://Ball.tscn" type="PackedScene" id=4]
 [ext_resource path="res://GoalPiece.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Ramp.tscn" type="PackedScene" id=6]
-[ext_resource path="res://CameraFollow.gd" type="Script" id=7]
+[ext_resource path="res://Spirit.gd" type="Script" id=7]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Box.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Box.gd" type="Script" id=10]
@@ -185,21 +185,28 @@ script = ExtResource( 1 )
 
 [node name="Walls" parent="." index="0" instance=ExtResource( 2 )]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 1, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 5, 50.5, 1, 0 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Walls2" parent="." index="1" instance=ExtResource( 2 )]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 1, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 5, -50.5, 1, 0 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Walls3" parent="." index="2" instance=ExtResource( 2 )]
 
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.19209e-07, 1, -10.5 )
+transform = Transform( -4.37114e-08, 0, 5, 0, 1, 0, -1, 0, -2.18557e-07, 1.19209e-07, 1, -50.5 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Walls4" parent="." index="3" instance=ExtResource( 2 )]
 
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.19209e-07, 1, 10.5 )
+transform = Transform( -4.37114e-08, 0, 5, 0, 1, 0, -1, 0, -2.18557e-07, 1.19209e-07, 1, 50.5 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Floor" parent="." index="4" instance=ExtResource( 3 )]
+
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="EndPlatform" parent="." index="5" instance=ExtResource( 3 )]
 
@@ -251,12 +258,21 @@ disabled = false
 
 transform = Transform( -2.2325, -1.12588e-07, 1.18017e-07, -8.31671e-08, 0.822724, 0.45125, -3.85115e-07, 0.475, -0.781588, 2.15802e-06, 5.36603, -15.866 )
 
-[node name="CameraFollow" type="Spatial" parent="." index="7"]
+[node name="Ramp3" parent="." index="7" instance=ExtResource( 6 )]
 
-transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -0.208001, 7, 7.3437 )
+transform = Transform( -2.2325, -1.12588e-07, 1.18017e-07, 5.35656e-08, 0.610648, 0.691355, -3.90335e-07, 0.727742, -0.580116, -22, 7.36603, -15.866 )
+
+[node name="Ramp2" parent="." index="8" instance=ExtResource( 6 )]
+
+transform = Transform( -2.2325, -1.12588e-07, 1.18017e-07, -1.80008e-07, 0.917629, 0.233584, -3.50467e-07, 0.245878, -0.871748, 22, 2.36603, -15.866 )
+
+[node name="Spirit" type="Spatial" parent="." index="9"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.208001, 7, 7.3437 )
 script = ExtResource( 7 )
+_sections_unfolded = [ "Pause", "Transform" ]
 
-[node name="Camera" type="Camera" parent="CameraFollow" index="0"]
+[node name="Camera" type="Camera" parent="Spirit" index="0"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5 )
 keep_aspect = 1
@@ -273,17 +289,17 @@ near = 0.05
 far = 100.0
 _sections_unfolded = [ "Transform" ]
 
-[node name="Player" parent="." index="8" instance=ExtResource( 8 )]
+[node name="Player" parent="." index="10" instance=ExtResource( 8 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 2.5, 6.55671e-08 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Box" parent="." index="9" instance=ExtResource( 9 )]
+[node name="Box" parent="." index="11" instance=ExtResource( 9 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 5.5, -5.5 )
 script = ExtResource( 10 )
 
-[node name="Panel" type="Panel" parent="." index="10"]
+[node name="Panel" type="Panel" parent="." index="12"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -323,7 +339,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Size Flags", "custom_colors", "custom_constants" ]
 
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="11"]
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="13"]
 
 transform = Transform( 1, 0, 0, 0, -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, 37, 0 )
 layers = 1
@@ -351,13 +367,13 @@ directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
 _sections_unfolded = [ "Editor", "Light", "Shadow", "Transform" ]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="12"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="14"]
 
 environment = SubResource( 3 )
 
-[node name="Waterplane" type="MeshInstance" parent="." index="13"]
+[node name="Waterplane" type="MeshInstance" parent="." index="15"]
 
-transform = Transform( 10, 0, 0, 0, 1, 0, 0, 0, 10, 0, 1.5, 0 )
+transform = Transform( 50, 0, 0, 0, 1, 0, 0, 0, 50, 0, 1.5, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -370,11 +386,11 @@ lod_max_hysteresis = 0.0
 mesh = SubResource( 4 )
 skeleton = NodePath("..")
 material/0 = SubResource( 6 )
-_sections_unfolded = [ "material" ]
+_sections_unfolded = [ "Transform", "material" ]
 
 [connection signal="body_entered" from="EndPlatform/Area" to="." method="_on_Area_body_entered"]
 
-[connection signal="update_angle" from="CameraFollow" to="." method="_on_CameraFollow_update_angle"]
+[connection signal="update_angle" from="Spirit" to="." method="_on_CameraFollow_update_angle"]
 
 [connection signal="update_position" from="Player" to="." method="_on_Player_update_position"]
 

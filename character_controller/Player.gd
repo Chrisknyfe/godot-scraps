@@ -3,7 +3,7 @@ extends KinematicBody
 signal update_position
 
 var speed = 600
-var direction = Vector3()
+var direction = Vector3() # directed by posessing spirit
 var gravity = -9.8
 var velocity  = Vector3()
 var look_angle_target = 0
@@ -22,19 +22,13 @@ func _ready():
 	
 
 func _physics_process(delta):
-	# Horizontal movement based on WASD
-	var direction_target = Vector3(0, 0, 0)
-	if Input.is_action_pressed("ui_left"):
-		direction_target += Vector3(-1, 0, 0).rotated(Vector3(0, 1, 0), look_angle_target)
-	if Input.is_action_pressed("ui_right"):
-		direction_target += Vector3(1, 0, 0).rotated(Vector3(0, 1, 0), look_angle_target)
-	if Input.is_action_pressed("ui_up"):
-		direction_target += Vector3(0, 0, -1).rotated(Vector3(0, 1, 0), look_angle_target)
-	if Input.is_action_pressed("ui_down"):
-		direction_target += Vector3(0, 0, 1).rotated(Vector3(0, 1, 0), look_angle_target)
-	direction_target = direction_target.normalized()
-	direction_target = direction_target * speed * delta
-	direction = direction.linear_interpolate(direction_target, 0.5)
+	# Clip y direction and normalize to player's speed
+	direction.y = 0
+	direction = direction.normalized()
+	direction = direction * speed * delta
+	
+	
+#	velocity = velocity.linear_interpolate(direction, 0.5)
 #
 #	if velocity.y > 0:
 #		gravity = -20
@@ -45,11 +39,10 @@ func _physics_process(delta):
 	velocity.x = direction.x
 	velocity.z = direction.z
 	
-	
 	velocity = move_and_slide(velocity, Vector3(0, 1, 0))
-
-	if is_on_floor() and Input.is_key_pressed(KEY_SPACE):
-		velocity.y = 10
+#
+#	if is_on_floor() and Input.is_key_pressed(KEY_SPACE):
+#		velocity.y = 10
 	
 	emit_signal("update_position", translation)
 	
