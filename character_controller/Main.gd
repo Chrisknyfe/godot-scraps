@@ -31,13 +31,3 @@ func _on_Area_body_entered( body ):
 		print ("You win!")
 		$Panel.show()
 
-	
-	
-
-#func _on_Player_update_position(pos):
-#	$Spirit.pos_target = pos
-#	pass # replace with function body
-
-
-#func _on_CameraFollow_update_angle(angle):
-#	$Player.look_angle_target = angle

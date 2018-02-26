@@ -18,7 +18,7 @@ extents = Vector3( 1, 1, 1 )
 [sub_resource type="SpatialMaterial" id=7]
 
 render_priority = 0
-flags_transparent = true
+flags_transparent = false
 flags_unshaded = false
 flags_vertex_lighting = false
 flags_no_depth_test = false
@@ -38,7 +38,7 @@ params_point_size = 1.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 1, 0.960938, 0, 0.751412 )
+albedo_color = Color( 1, 0.9375, 0, 1 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -65,15 +65,15 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo" ]
+_sections_unfolded = [ "Albedo", "Flags" ]
 
 [sub_resource type="SphereMesh" id=8]
 
 material = SubResource( 7 )
 radius = 1.0
 height = 2.0
-radial_segments = 64
-rings = 32
+radial_segments = 16
+rings = 8
 is_hemisphere = false
 
 [sub_resource type="ProceduralSky" id=2]
@@ -271,6 +271,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="EndPlatform" parent="." index="5" instance=ExtResource( 3 )]
 
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 6.5, -40.5 )
 
 [node name="Ball" parent="EndPlatform" index="1" instance=ExtResource( 4 )]
@@ -347,7 +348,7 @@ current = false
 fov = 70.0
 size = 1.0
 near = 0.05
-far = 100.0
+far = 200.0
 _sections_unfolded = [ "Transform" ]
 
 [node name="MeshInstance" type="MeshInstance" parent="Spirit" index="1"]
@@ -467,10 +468,6 @@ material/0 = SubResource( 6 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [connection signal="body_entered" from="EndPlatform/Area" to="." method="_on_Area_body_entered"]
-
-[connection signal="update_angle" from="Spirit" to="." method="_on_CameraFollow_update_angle"]
-
-[connection signal="update_position" from="Player" to="." method="_on_Player_update_position"]
 
 [connection signal="body_entered" from="Box" to="Box" method="_on_Box_body_entered"]
 

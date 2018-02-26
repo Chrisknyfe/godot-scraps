@@ -1,10 +1,13 @@
 extends KinematicBody
 
-signal update_position
+
+var gravity = 9.8 * 3
+const WALK_SPEED = 20
+const WALK_ACCEL = 4
+const JUMP_HEIGHT = 15
 
 var speed = 600
 var direction = Vector3() # directed by posessing spirit
-var gravity = -9.8
 var velocity  = Vector3()
 var look_angle_target = 0
 
@@ -22,31 +25,21 @@ func _ready():
 	
 
 func _physics_process(delta):
+	walk(delta)
+	
+func walk(delta):
 	# Clip y direction and normalize to player's speed
 	direction.y = 0
 	direction = direction.normalized()
-	direction = direction * speed * delta
-#
-#	if velocity.y > 0:
-#		gravity = -20
-#	else:
-#		gravity = -30
+	direction = direction * WALK_SPEED
 	
 	direction.y = velocity.y
-	velocity = velocity.linear_interpolate(direction, 0.5)
-	velocity.y += gravity * delta
+	velocity = velocity.linear_interpolate(direction, WALK_ACCEL * delta)
+	velocity.y -= gravity * delta
 	velocity = move_and_slide(velocity, Vector3(0, 1, 0))
 #
 #	if is_on_floor() and Input.is_key_pressed(KEY_SPACE):
 #		velocity.y = 10
 	
-	emit_signal("update_position", translation)
-	
-#	var hitcount = get_slide_count()
-#	if hitcount > 0:
-#		var collision = get_slide_collision(0)
-#		if collision.collider is RigidBody:
-#			collision.collider.apply_impulse(collision.position, -collision.normal)
-			
 			
 			

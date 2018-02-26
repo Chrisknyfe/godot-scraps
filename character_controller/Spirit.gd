@@ -1,8 +1,7 @@
 extends Spatial
 
-signal update_angle
-
 const FLY_SPEED = 20
+const FLY_ACCEL = 4
 const PRINT_DELAY = 0.1
 
 var host = null
@@ -44,8 +43,9 @@ func _input(event):
 		rot_target.x -= deg2rad(event.relative.y)/3
 
 		# clamp vertical mouselook
-		rot_target.x = max(rot_target.x, -PI/2.0)
-		rot_target.x = min(rot_target.x, PI/2.0)
+		var CLAMP_LIM = PI/2.0 - deg2rad(0.1)
+		rot_target.x = max(rot_target.x, -CLAMP_LIM)
+		rot_target.x = min(rot_target.x, CLAMP_LIM)
 
 		# wrap horizontal mouselook
 		if rot_target.y > PI:
@@ -79,24 +79,14 @@ func _physics_process(delta):
 		h.direction = direction_target
 		# Make the camera follow the player
 		translation = h.translation
-#		rotation = rot_target
 		
 	else:
 		# Move based on our own desired velocity
-		direction_target = direction_target * FLY_SPEED * delta
-		velocity_target = velocity_target.linear_interpolate(direction_target, 0.5)
-		global_translate(velocity_target)
+		direction_target = direction_target * FLY_SPEED
+		velocity_target = velocity_target.linear_interpolate(direction_target, FLY_ACCEL * delta)
+		global_translate(velocity_target * delta)
 	
-	# rotate interpolated
-#	rotation = rot_target
-	var target = Transform()
-	target = target.rotated(Vector3(1,0,0), rot_target.x)
-	target = target.rotated(Vector3(0,1,0), rot_target.y)
-	target = target.rotated(Vector3(0,0,1), rot_target.z)
-	target.origin = global_transform.origin
-	global_transform = global_transform.interpolate_with(target, 0.5)
-
+	rotation = rot_target
+	
 	if time_to_print():
 		print("rot: ", rot_target, "dir: ", direction_target)
-
-#	emit_signal("update_angle", rotation.y)
