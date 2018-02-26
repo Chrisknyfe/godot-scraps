@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/goldcube.obj-ae6ddc3d75ba27210653adf4ca32b5ce.mesh"
+
+[deps]
+
+files=[ "res://.import/goldcube.obj-ae6ddc3d75ba27210653adf4ca32b5ce.mesh" ]
+
+source_file="res://goldcube.obj"
+source_md5="a4682c8268de3d2f138f9a5a76de6fcd"
+
+dest_files=[ "res://.import/goldcube.obj-ae6ddc3d75ba27210653adf4ca32b5ce.mesh", "res://.import/goldcube.obj-ae6ddc3d75ba27210653adf4ca32b5ce.mesh" ]
+dest_md5="dae2ebed2b1d84f6d76841764064e310"
+
+[params]
+
+generate_tangents=true
