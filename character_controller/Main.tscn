@@ -240,7 +240,7 @@ shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
 _sections_unfolded = [ "Resource", "shader_param" ]
 
-[node name="Main" type="Spatial" index="0"]
+[node name="Main" type="Spatial"]
 
 script = ExtResource( 1 )
 
@@ -353,7 +353,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Sphere" type="MeshInstance" parent="Spirit" index="1"]
 
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -370,7 +370,7 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Player" parent="." index="10" instance=ExtResource( 8 )]
 
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 2.5, 6.55671e-08 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 6.55671e-08 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Box" parent="." index="11" instance=ExtResource( 9 )]

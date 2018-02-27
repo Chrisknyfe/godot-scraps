@@ -59,6 +59,14 @@ func time_to_print():
 		last_print_time = curr_time
 		return true
 	return false
+	
+	
+func slerp_euler(initial_rot, target_rot, weight):
+	var init_trans = Transform(Basis(initial_rot), Vector3(0,0,0))
+	var target_trans = Transform(Basis(target_rot), Vector3(0,0,0))
+	
+	var final_trans = init_trans.interpolate_with(target_trans, weight)
+	return final_trans.basis.get_euler()
 
 func _physics_process(delta):
 
@@ -77,7 +85,8 @@ func _physics_process(delta):
 	if is_posessing():
 		var h = get_host()
 		# Control the direction of the host's movement
-		h.direction = direction_target
+		h.move_direction = direction_target
+		h.look_direction = rot_target
 		# Make the camera follow the player
 		translation = h.translation
 		
@@ -105,7 +114,7 @@ func _physics_process(delta):
 		if !$Sphere.visible:
 			$Sphere.visible = true
 	
-	rotation = rot_target
+	rotation = slerp_euler(rotation, rot_target, 10 * delta)
 	
 	if time_to_print():
-		print("rot: ", rot_target, "dir: ", direction_target)
+		print("rot_t: ", rot_target, "rotation: ", rotation)

@@ -11,7 +11,8 @@ const FLY_SPEED = 20
 const FLY_ACCEL = 4
 
 # externally controllable vars
-var direction = Vector3()
+var move_direction = Vector3()
+var look_direction = Vector3()
 var flying = false
 var sprinting = false
 var jumping = false
@@ -33,6 +34,7 @@ func _ready():
 	
 
 func _physics_process(delta):
+	aim(delta)
 	if flying:
 		fly(delta)
 	else:
@@ -40,11 +42,14 @@ func _physics_process(delta):
 			walk(delta, SPRINT_SPEED)
 		else:
 			walk(delta, WALK_SPEED)
+			
+func aim(delta):
+	$Head.rotation = look_direction
 	
 func fly(delta):
-	var temp_direction = direction
+	var temp_direction = move_direction
 	# space to go up a bit
-	if Input.is_key_pressed(KEY_SPACE):
+	if jumping:
 		temp_direction += Vector3(0, 1, 0)
 	# normalize to player's fly speed
 	temp_direction = temp_direction.normalized()
@@ -54,7 +59,7 @@ func fly(delta):
 	velocity = move_and_slide(velocity, Vector3(0, 1, 0))
 	
 func walk(delta, speed):
-	var temp_direction = direction
+	var temp_direction = move_direction
 	# Clip y direction and normalize to player's walk speed
 	temp_direction.y = 0
 	temp_direction = temp_direction.normalized()
@@ -70,7 +75,7 @@ func walk(delta, speed):
 	velocity = velocity.linear_interpolate(temp_direction, accel * delta)
 	
 	velocity.y -= GRAVITY * delta
-	if is_on_floor() and Input.is_key_pressed(KEY_SPACE):
+	if is_on_floor() and jumping:
 		velocity.y = JUMP_HEIGHT
 	
 	velocity = move_and_slide(velocity, Vector3(0, 1, 0))
