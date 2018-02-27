@@ -3,6 +3,7 @@ extends Spatial
 const FLY_SPEED = 20
 const FLY_ACCEL = 4
 const PRINT_DELAY = 0.1
+const MOUSE_SENSITIVITY = 0.25
 
 var host = null
 var pos_target = Vector3(0,0,0)
@@ -39,8 +40,8 @@ func is_posessing():
 func _input(event):
 	# Mouse movement changes rotation target
 	if event is InputEventMouseMotion:
-		rot_target.y -= deg2rad(event.relative.x)/3
-		rot_target.x -= deg2rad(event.relative.y)/3
+		rot_target.y -= deg2rad(event.relative.x) * MOUSE_SENSITIVITY
+		rot_target.x -= deg2rad(event.relative.y) * MOUSE_SENSITIVITY
 
 		# clamp vertical mouselook
 		var CLAMP_LIM = PI/2.0 - deg2rad(0.1)
@@ -61,12 +62,14 @@ func time_to_print():
 	return false
 	
 	
-func slerp_euler(initial_rot, target_rot, weight):
+func slerp_euler_no_z(initial_rot, target_rot, weight):
 	var init_trans = Transform(Basis(initial_rot), Vector3(0,0,0))
 	var target_trans = Transform(Basis(target_rot), Vector3(0,0,0))
 	
 	var final_trans = init_trans.interpolate_with(target_trans, weight)
-	return final_trans.basis.get_euler()
+	var final_rot = final_trans.basis.get_euler()
+	final_rot.z = 0
+	return final_rot
 
 func _physics_process(delta):
 
@@ -114,7 +117,7 @@ func _physics_process(delta):
 		if !$Sphere.visible:
 			$Sphere.visible = true
 	
-	rotation = slerp_euler(rotation, rot_target, 10 * delta)
-	
-	if time_to_print():
-		print("rot_t: ", rot_target, "rotation: ", rotation)
+	rotation = slerp_euler_no_z(rotation, rot_target, 10 * delta)
+#
+#	if time_to_print():
+#		print("rot_t: ", rot_target, "rotation: ", rotation)
