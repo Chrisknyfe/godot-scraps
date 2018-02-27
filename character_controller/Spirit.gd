@@ -64,27 +64,46 @@ func _physics_process(delta):
 
 	# Horizontal movement based on WASD
 	var direction_target = Vector3(0, 0, 0)
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("left"):
 		direction_target += Vector3(-1, 0, 0).rotated(Vector3(0, 1, 0), rot_target.y)
-	if Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("right"):
 		direction_target += Vector3(1, 0, 0).rotated(Vector3(0, 1, 0), rot_target.y)
-	if Input.is_action_pressed("ui_up"):
+	if Input.is_action_pressed("forward"):
 		direction_target += Vector3(0, 0, -1).rotated(Vector3(1, 0, 0), rot_target.x).rotated(Vector3(0, 1, 0), rot_target.y)
-	if Input.is_action_pressed("ui_down"):
+	if Input.is_action_pressed("back"):
 		direction_target += Vector3(0, 0, 1).rotated(Vector3(1, 0, 0), rot_target.x).rotated(Vector3(0, 1, 0), rot_target.y)
 	direction_target = direction_target.normalized()
 
 	if is_posessing():
 		var h = get_host()
+		# Control the direction of the host's movement
 		h.direction = direction_target
 		# Make the camera follow the player
 		translation = h.translation
 		
+		if Input.is_action_pressed("jump"):
+			h.jumping = true
+		else:
+			h.jumping = false
+			
+		if Input.is_action_just_pressed("fly"):
+			h.flying = !h.flying
+			
+		if Input.is_action_pressed("sprint"):
+			h.sprinting = true
+		else:
+			h.sprinting = false
+		
+		if $Sphere.visible:
+			$Sphere.visible = false
 	else:
-		# Move based on our own desired velocity
+		# Fly based on our own desired velocity
 		direction_target = direction_target * FLY_SPEED
 		velocity_target = velocity_target.linear_interpolate(direction_target, FLY_ACCEL * delta)
 		global_translate(velocity_target * delta)
+		
+		if !$Sphere.visible:
+			$Sphere.visible = true
 	
 	rotation = rot_target
 	

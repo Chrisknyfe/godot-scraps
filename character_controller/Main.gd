@@ -15,11 +15,11 @@ func _ready():
 func _process(delta):
 	# Called every frame. Delta is time since last frame.
 	# Update game logic here.
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("reset"):
 		get_tree().reload_current_scene()
-	if Input.is_action_just_pressed("ui_quit"):
+	if Input.is_action_just_pressed("quit"):
 		get_tree().quit()
-	if Input.is_action_just_pressed("ui_focus_next"):
+	if Input.is_action_just_pressed("possess"):
 		if $Spirit.is_posessing():
 			$Spirit.posess(null)
 		else:

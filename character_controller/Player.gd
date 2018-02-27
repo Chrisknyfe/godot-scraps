@@ -1,15 +1,23 @@
 extends KinematicBody
 
-
-var gravity = 9.8 * 3
-const WALK_SPEED = 20
-const WALK_ACCEL = 4
+# Constants
+const GRAVITY = 9.8 * 3
+const WALK_SPEED = 10
+const SPRINT_SPEED = 40
+const ACCEL = 4
+const DEACCEL = 8
 const JUMP_HEIGHT = 15
+const FLY_SPEED = 20
+const FLY_ACCEL = 4
 
-var speed = 600
-var direction = Vector3() # directed by posessing spirit
-var velocity  = Vector3()
-var look_angle_target = 0
+# externally controllable vars
+var direction = Vector3()
+var flying = false
+var sprinting = false
+var jumping = false
+
+# internal vars
+var velocity  = Vector3() # smoothed velocity
 
 
 func _ready():
@@ -25,21 +33,48 @@ func _ready():
 	
 
 func _physics_process(delta):
-	walk(delta)
+	if flying:
+		fly(delta)
+	else:
+		if sprinting:
+			walk(delta, SPRINT_SPEED)
+		else:
+			walk(delta, WALK_SPEED)
 	
-func walk(delta):
-	# Clip y direction and normalize to player's speed
-	direction.y = 0
-	direction = direction.normalized()
-	direction = direction * WALK_SPEED
+func fly(delta):
+	var temp_direction = direction
+	# space to go up a bit
+	if Input.is_key_pressed(KEY_SPACE):
+		temp_direction += Vector3(0, 1, 0)
+	# normalize to player's fly speed
+	temp_direction = temp_direction.normalized()
+	temp_direction = temp_direction * FLY_SPEED
 	
-	direction.y = velocity.y
-	velocity = velocity.linear_interpolate(direction, WALK_ACCEL * delta)
-	velocity.y -= gravity * delta
+	velocity = velocity.linear_interpolate(temp_direction, FLY_ACCEL * delta)
+	velocity = move_and_slide(velocity, Vector3(0, 1, 0))
+	
+func walk(delta, speed):
+	var temp_direction = direction
+	# Clip y direction and normalize to player's walk speed
+	temp_direction.y = 0
+	temp_direction = temp_direction.normalized()
+	temp_direction = temp_direction * speed
+	
+	temp_direction.y = velocity.y
+	
+	# decelerate faster
+	var accel = ACCEL
+	if temp_direction.dot(velocity) > 0:
+		accel = DEACCEL
+	
+	velocity = velocity.linear_interpolate(temp_direction, accel * delta)
+	
+	velocity.y -= GRAVITY * delta
+	if is_on_floor() and Input.is_key_pressed(KEY_SPACE):
+		velocity.y = JUMP_HEIGHT
+	
 	velocity = move_and_slide(velocity, Vector3(0, 1, 0))
 #
-#	if is_on_floor() and Input.is_key_pressed(KEY_SPACE):
-#		velocity.y = 10
 	
 			
 			
