@@ -107,8 +107,8 @@ background_sky_custom_fov = 0.0
 background_color = Color( 0, 0, 0, 1 )
 background_energy = 1.0
 background_canvas_max_layer = 0
-ambient_light_color = Color( 0, 0, 0, 1 )
-ambient_light_energy = 1.0
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 2.0
 ambient_light_sky_contribution = 1.0
 fog_enabled = false
 fog_color = Color( 0.5, 0.6, 0.7, 1 )
@@ -242,6 +242,58 @@ shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
 _sections_unfolded = [ "Resource", "shader_param" ]
 
+[sub_resource type="SpatialMaterial" id=9]
+
+render_priority = 0
+flags_transparent = false
+flags_unshaded = false
+flags_vertex_lighting = false
+flags_no_depth_test = false
+flags_use_point_size = false
+flags_world_triplanar = false
+flags_fixed_size = false
+flags_albedo_tex_force_srgb = false
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
+params_diffuse_mode = 0
+params_specular_mode = 0
+params_blend_mode = 0
+params_cull_mode = 0
+params_depth_draw_mode = 0
+params_line_width = 1.0
+params_point_size = 1.0
+params_billboard_mode = 0
+params_grow = false
+params_use_alpha_scissor = false
+albedo_color = Color( 1, 0, 0, 1 )
+metallic = 0.0
+metallic_specular = 0.5
+metallic_texture_channel = 0
+roughness = 0.0
+roughness_texture_channel = 0
+emission_enabled = false
+normal_enabled = false
+rim_enabled = false
+clearcoat_enabled = false
+anisotropy_enabled = false
+ao_enabled = false
+depth_enabled = false
+subsurf_scatter_enabled = false
+transmission_enabled = false
+refraction_enabled = false
+detail_enabled = false
+uv1_scale = Vector3( 1, 1, 1 )
+uv1_offset = Vector3( 0, 0, 0 )
+uv1_triplanar = false
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 1, 1, 1 )
+uv2_offset = Vector3( 0, 0, 0 )
+uv2_triplanar = false
+uv2_triplanar_sharpness = 1.0
+proximity_fade_enable = false
+distance_fade_enable = false
+_sections_unfolded = [ "Albedo" ]
+
 [sub_resource type="SpatialMaterial" id=10]
 
 render_priority = 0
@@ -317,58 +369,6 @@ params_point_size = 1.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 1, 0, 0, 1 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 0.0
-roughness_texture_channel = 0
-emission_enabled = false
-normal_enabled = false
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_enable = false
-_sections_unfolded = [ "Albedo" ]
-
-[sub_resource type="SpatialMaterial" id=12]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_grow = false
-params_use_alpha_scissor = false
 albedo_color = Color( 1, 0.609375, 0, 1 )
 metallic = 0.0
 metallic_specular = 0.5
@@ -398,7 +398,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="BoxShape" id=9]
+[sub_resource type="BoxShape" id=12]
 
 extents = Vector3( 0.25, 1, 0.25 )
 
@@ -483,13 +483,19 @@ transform = Transform( -2.2325, -1.12588e-07, 1.18017e-07, -8.31671e-08, 0.82272
 
 [node name="Ramp3" parent="." index="7" instance=ExtResource( 6 )]
 
-transform = Transform( -2.2325, -1.12588e-07, 1.18017e-07, 5.35656e-08, 0.610648, 0.691355, -3.90335e-07, 0.727742, -0.580116, -22, 7.36603, -15.866 )
+transform = Transform( -2.2325, 5.87264e-08, -5.57901e-08, 0, 0.671751, 0.638164, 1.95171e-07, 0.671751, -0.638164, -15, 7.36603, -14.866 )
+_sections_unfolded = [ "Transform" ]
 
-[node name="Ramp2" parent="." index="8" instance=ExtResource( 6 )]
+[node name="Ramp4" parent="." index="8" instance=ExtResource( 6 )]
 
-transform = Transform( -2.2325, -1.12588e-07, 1.18017e-07, -1.80008e-07, 0.917629, 0.233584, -3.50467e-07, 0.245878, -0.871748, 22, 2.36603, -15.866 )
+transform = Transform( -2.2325, 5.87264e-08, -5.57901e-08, -3.38912e-08, 0.544897, 0.739285, 1.92206e-07, 0.778194, -0.517653, -25, 7.36603, -14.866 )
+_sections_unfolded = [ "Transform" ]
 
-[node name="Spirit" type="Spatial" parent="." index="9"]
+[node name="Ramp2" parent="." index="9" instance=ExtResource( 6 )]
+
+transform = Transform( -2.2325, -1.12588e-07, 1.18017e-07, -1.80008e-07, 0.917629, 0.233584, -3.50467e-07, 0.245878, -0.871748, 21, 2.36603, -15.866 )
+
+[node name="Spirit" type="Spatial" parent="." index="10"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.208001, 7, 7.3437 )
 script = ExtResource( 7 )
@@ -529,17 +535,31 @@ skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform", "Visibility" ]
 
-[node name="Player" parent="." index="10" instance=ExtResource( 8 )]
+[node name="Player" parent="." index="11" instance=ExtResource( 8 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 6.55671e-08 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Box" parent="." index="11" instance=ExtResource( 9 )]
+[node name="Box" parent="." index="12" instance=ExtResource( 9 )]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 5.5, -5.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5, 18.5, -24.5 )
 script = ExtResource( 10 )
 
-[node name="Panel" type="Panel" parent="." index="12"]
+[node name="Box2" parent="." index="13" instance=ExtResource( 9 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25.5, 18.5, -24.5 )
+script = ExtResource( 10 )
+
+[node name="Box3" parent="." index="14" instance=ExtResource( 9 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 12.5, -27.5 )
+script = ExtResource( 10 )
+
+[node name="Box4" parent="." index="15" instance=ExtResource( 9 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5, 8.5, -28.5 )
+script = ExtResource( 10 )
+
+[node name="Panel" type="Panel" parent="." index="16"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -579,7 +599,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Size Flags", "custom_colors", "custom_constants" ]
 
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="13"]
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="17"]
 
 transform = Transform( 1, 0, 0, 0, -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, 37, 0 )
 layers = 1
@@ -607,11 +627,11 @@ directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
 _sections_unfolded = [ "Editor", "Light", "Shadow", "Transform" ]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="14"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="18"]
 
 environment = SubResource( 5 )
 
-[node name="Waterplane" type="MeshInstance" parent="." index="15"]
+[node name="Waterplane" type="MeshInstance" parent="." index="19"]
 
 transform = Transform( 50, 0, 0, 0, 1, 0, 0, 0, 50, 0, 1.5, 0 )
 layers = 1
@@ -628,12 +648,12 @@ skeleton = NodePath("..")
 material/0 = SubResource( 8 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="Ladderwall" parent="." index="16" instance=ExtResource( 2 )]
+[node name="Ladderwall" parent="." index="20" instance=ExtResource( 2 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 3, 0, -1, 0, -4.37114e-08, 0.5, 3, -31 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Ladder" type="Area" parent="." index="17"]
+[node name="Ladder" type="Area" parent="." index="21"]
 
 transform = Transform( 0.148256, 0, 3.99725, 0, 4, 0, -3.99725, 0, 0.148256, -7, 4, -30 )
 input_ray_pickable = false
@@ -673,19 +693,25 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = ExtResource( 12 )
 skeleton = NodePath("..")
-material/0 = SubResource( 10 )
-material/1 = SubResource( 11 )
-material/2 = SubResource( 12 )
+material/0 = SubResource( 9 )
+material/1 = SubResource( 10 )
+material/2 = SubResource( 11 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="CollisionShape" type="CollisionShape" parent="Ladder" index="1"]
 
-shape = SubResource( 9 )
+shape = SubResource( 12 )
 disabled = false
 
 [connection signal="body_entered" from="EndPlatform/Area" to="." method="_on_Area_body_entered"]
 
 [connection signal="body_entered" from="Box" to="Box" method="_on_Box_body_entered"]
+
+[connection signal="body_entered" from="Box2" to="Box2" method="_on_Box_body_entered"]
+
+[connection signal="body_entered" from="Box3" to="Box3" method="_on_Box_body_entered"]
+
+[connection signal="body_entered" from="Box4" to="Box4" method="_on_Box_body_entered"]
 
 [connection signal="body_entered" from="Ladder" to="Ladder" method="_on_Ladder_body_entered"]
 

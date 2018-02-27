@@ -127,7 +127,7 @@ subdivide_width = 0
 subdivide_height = 0
 subdivide_depth = 0
 
-[node name="Player" type="KinematicBody" index="0"]
+[node name="Player" type="KinematicBody"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
@@ -141,6 +141,7 @@ axis_lock_angular_y = false
 axis_lock_angular_z = false
 collision/safe_margin = 0.001
 script = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="ViewBody" type="MeshInstance" parent="." index="0"]
 
@@ -182,5 +183,13 @@ mesh = SubResource( 4 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]
+
+[node name="Tail" type="RayCast" parent="." index="3"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.732623, 0 )
+enabled = true
+exclude_parent = true
+cast_to = Vector3( 0, -1, 0 )
+collision_mask = 1
 
 
