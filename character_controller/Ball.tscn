@@ -65,14 +65,14 @@ is_hemisphere = false
 
 radius = 1.0
 
-[node name="Ball" type="RigidBody"]
+[node name="Ball" type="RigidBody" index="0"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
 collision_layer = 1
 collision_mask = 1
 mode = 0
-mass = 0.3
+mass = 0.05
 friction = 1.0
 bounce = 0.0
 gravity_scale = 1.0

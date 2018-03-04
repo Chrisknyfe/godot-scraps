@@ -67,7 +67,7 @@ rings = 8
 radius = 0.5
 height = 2.0
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="SpatialMaterial" id=4]
 
 render_priority = 0
 flags_transparent = false
@@ -119,9 +119,9 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="CubeMesh" id=5]
 
-material = SubResource( 5 )
+material = SubResource( 4 )
 size = Vector3( 2, 2, 2 )
 subdivide_width = 0
 subdivide_height = 0
@@ -179,7 +179,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]
@@ -191,5 +191,14 @@ enabled = true
 exclude_parent = true
 cast_to = Vector3( 0, -1, 0 )
 collision_mask = 1
+
+[node name="StairCatcher" type="RayCast" parent="." index="4"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.759207, -0.583114 )
+enabled = true
+exclude_parent = true
+cast_to = Vector3( 0, -0.6, 0 )
+collision_mask = 1
+_sections_unfolded = [ "Transform" ]
 
 

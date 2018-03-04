@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Walls.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Box.gd" type="Script" id=10]
 [ext_resource path="res://Ladder.gd" type="Script" id=11]
 [ext_resource path="res://Ladder.obj" type="ArrayMesh" id=12]
+[ext_resource path="res://Stairs.tscn" type="PackedScene" id=13]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -480,22 +481,43 @@ disabled = false
 [node name="Ramp" parent="." index="6" instance=ExtResource( 6 )]
 
 transform = Transform( -2.2325, -1.12588e-07, 1.18017e-07, -8.31671e-08, 0.822724, 0.45125, -3.85115e-07, 0.475, -0.781588, 2.15802e-06, 5.36603, -15.866 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Ramp3" parent="." index="7" instance=ExtResource( 6 )]
 
-transform = Transform( -2.2325, 5.87264e-08, -5.57901e-08, 0, 0.671751, 0.638164, 1.95171e-07, 0.671751, -0.638164, -15, 7.36603, -14.866 )
+transform = Transform( -2.2325, 5.87263e-08, -5.57901e-08, 0, 0.671751, 0.638164, 1.95171e-07, 0.671751, -0.638164, -24, 7.36603, -14.866 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Ramp4" parent="." index="8" instance=ExtResource( 6 )]
+[node name="Ramp5" parent="." index="8" instance=ExtResource( 6 )]
 
-transform = Transform( -2.2325, 5.87264e-08, -5.57901e-08, -3.38912e-08, 0.544897, 0.739285, 1.92206e-07, 0.778194, -0.517653, -25, 7.36603, -14.866 )
+transform = Transform( -2.2325, 9.22053e-08, -1.04392e-07, 0, 0.727742, 0.580116, 3.37098e-07, 0.610648, -0.691355, -16, 6.36603, -14.866 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Ramp2" parent="." index="9" instance=ExtResource( 6 )]
+[node name="Ramp4" parent="." index="9" instance=ExtResource( 6 )]
+
+transform = Transform( -2.2325, 5.87264e-08, -5.57901e-08, -3.38912e-08, 0.544897, 0.739285, 1.92206e-07, 0.778194, -0.517653, -34, 7.36603, -14.866 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Ramp2" parent="." index="10" instance=ExtResource( 6 )]
 
 transform = Transform( -2.2325, -1.12588e-07, 1.18017e-07, -1.80008e-07, 0.917629, 0.233584, -3.50467e-07, 0.245878, -0.871748, 21, 2.36603, -15.866 )
 
-[node name="Spirit" type="Spatial" parent="." index="10"]
+[node name="Stairtop" parent="." index="11" instance=ExtResource( 6 )]
+
+transform = Transform( -1.74846e-07, 0, 1, 0, 1, 0, -4, 0, -4.37114e-08, 19, 2, 0 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Stairtop2" parent="." index="12" instance=ExtResource( 6 )]
+
+transform = Transform( -1.74846e-07, 0, 1, 0, 1, 0, -4, 0, -4.37114e-08, 22, 4, 8 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Stairtop3" parent="." index="13" instance=ExtResource( 6 )]
+
+transform = Transform( -1.74846e-07, 0, 1, 0, 1, 0, -4, 0, -4.37114e-08, 24, 6, 16 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Spirit" type="Spatial" parent="." index="14"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.208001, 7, 7.3437 )
 script = ExtResource( 7 )
@@ -535,31 +557,36 @@ skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform", "Visibility" ]
 
-[node name="Player" parent="." index="11" instance=ExtResource( 8 )]
+[node name="Player" parent="." index="15" instance=ExtResource( 8 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 6.55671e-08 )
 
-[node name="Box" parent="." index="12" instance=ExtResource( 9 )]
+[node name="Box" parent="." index="16" instance=ExtResource( 9 )]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5, 18.5, -24.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24.5, 18.5, -24.5 )
 script = ExtResource( 10 )
 
-[node name="Box2" parent="." index="13" instance=ExtResource( 9 )]
+[node name="Box5" parent="." index="17" instance=ExtResource( 9 )]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25.5, 18.5, -24.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.5, 18.5, -24.5 )
 script = ExtResource( 10 )
 
-[node name="Box3" parent="." index="14" instance=ExtResource( 9 )]
+[node name="Box2" parent="." index="18" instance=ExtResource( 9 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -34.5, 18.5, -24.5 )
+script = ExtResource( 10 )
+
+[node name="Box3" parent="." index="19" instance=ExtResource( 9 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 12.5, -27.5 )
 script = ExtResource( 10 )
 
-[node name="Box4" parent="." index="15" instance=ExtResource( 9 )]
+[node name="Box4" parent="." index="20" instance=ExtResource( 9 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5, 8.5, -28.5 )
 script = ExtResource( 10 )
 
-[node name="Panel" type="Panel" parent="." index="16"]
+[node name="Panel" type="Panel" parent="." index="21"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -599,7 +626,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Size Flags", "custom_colors", "custom_constants" ]
 
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="17"]
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="22"]
 
 transform = Transform( 1, 0, 0, 0, -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, 37, 0 )
 layers = 1
@@ -627,11 +654,11 @@ directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
 _sections_unfolded = [ "Editor", "Light", "Shadow", "Transform" ]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="18"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="23"]
 
 environment = SubResource( 5 )
 
-[node name="Waterplane" type="MeshInstance" parent="." index="19"]
+[node name="Waterplane" type="MeshInstance" parent="." index="24"]
 
 transform = Transform( 50, 0, 0, 0, 1, 0, 0, 0, 50, 0, 1.5, 0 )
 layers = 1
@@ -648,12 +675,12 @@ skeleton = NodePath("..")
 material/0 = SubResource( 8 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="Ladderwall" parent="." index="20" instance=ExtResource( 2 )]
+[node name="Ladderwall" parent="." index="25" instance=ExtResource( 2 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 3, 0, -1, 0, -4.37114e-08, 0.5, 3, -31 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Ladder" type="Area" parent="." index="21"]
+[node name="Ladder" type="Area" parent="." index="26"]
 
 transform = Transform( 0.148256, 0, 3.99725, 0, 4, 0, -3.99725, 0, 0.148256, -7, 4, -30 )
 input_ray_pickable = false
@@ -703,9 +730,26 @@ _sections_unfolded = [ "Transform", "material" ]
 shape = SubResource( 12 )
 disabled = false
 
+[node name="Stairs" parent="." index="27" instance=ExtResource( 13 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, 0 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Stairs2" parent="." index="28" instance=ExtResource( 13 )]
+
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, 6, 0.5, 8 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Stairs3" parent="." index="29" instance=ExtResource( 13 )]
+
+transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 1, 6, 0.5, 16 )
+_sections_unfolded = [ "Transform" ]
+
 [connection signal="body_entered" from="EndPlatform/Area" to="." method="_on_Area_body_entered"]
 
 [connection signal="body_entered" from="Box" to="Box" method="_on_Box_body_entered"]
+
+[connection signal="body_entered" from="Box5" to="Box5" method="_on_Box_body_entered"]
 
 [connection signal="body_entered" from="Box2" to="Box2" method="_on_Box_body_entered"]
 

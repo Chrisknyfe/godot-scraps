@@ -11,6 +11,9 @@ const FLY_SPEED = 20
 const FLY_ACCEL = 4
 const CLIMB_SPEED = 5
 const MAX_SLOPE_ANGLE = 35 # degrees
+const MAX_STAIR_SLOPE = 20
+const STAIR_JUMP_VEL = 0.2
+const STAIR_JUMP_STEP = 0.2 # proportional to stair height
 
 # externally controllable vars
 var move_direction = Vector3()
@@ -64,13 +67,14 @@ func fly(delta, speed):
 	velocity = move_and_slide(velocity, Vector3(0, 1, 0))
 	
 func walk(delta, speed):
-	var temp_direction = move_direction
 	# Clip y direction and normalize to player's walk speed
+	var temp_direction = move_direction
 	temp_direction.y = 0
 	temp_direction = temp_direction.normalized()
 	temp_direction = temp_direction * speed
 	# Maintain gravity
 	temp_direction.y = velocity.y
+	
 	
 	# Determine ground contact using our tail
 	if is_on_floor():
@@ -94,6 +98,30 @@ func walk(delta, speed):
 	else:
 		velocity.y -= GRAVITY * delta
 	
+	# Step up on stairs.
+	# They must be of a certain angle and height.
+	# The player will step up a fixed amount based on stair size.
+	var sc_dir = temp_direction
+	sc_dir.y = 0
+	sc_dir = sc_dir.normalized() * 0.55
+	$StairCatcher.translation.x = sc_dir.x
+	$StairCatcher.translation.z = sc_dir.z
+	if (sc_dir.length() > 0) and $StairCatcher.is_colliding():
+		var stair_normal = $StairCatcher.get_collision_normal()
+		var stair_angle = rad2deg(acos(stair_normal.dot(Vector3(0,1,0))))
+		if stair_angle < MAX_STAIR_SLOPE:
+			if velocity.y < 0:
+				velocity.y = 0
+			velocity.y += STAIR_JUMP_VEL
+			print($StairCatcher.get_collision_point(), get_global_transform().origin)
+			var stairheight = 1.5 - (get_global_transform().origin.y - $StairCatcher.get_collision_point().y)
+			print(stairheight)
+			move_and_collide(Vector3(0, stairheight * (1+STAIR_JUMP_STEP), 0))
+			has_ground_contact = false
+			
+		
+	
+	# Perform jumping
 	if has_ground_contact and jumping:
 		velocity.y = JUMP_HEIGHT
 		has_ground_contact = false
