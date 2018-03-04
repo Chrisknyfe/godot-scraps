@@ -98,6 +98,11 @@ func _physics_process(delta):
 		else:
 			h.jumping = false
 			
+		if Input.is_action_pressed("crouch"):
+			h.crouching = true
+		else:
+			h.crouching = false
+			
 		if Input.is_action_just_pressed("fly"):
 			h.flying = !h.flying
 			

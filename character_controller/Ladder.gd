@@ -16,17 +16,17 @@ func _ready():
 
 
 func _on_Ladder_body_entered(body):
-	print("body is: ", body.get_filename())
+#	print("body is: ", body.get_filename())
 	# This check could be better with some kind of entity type system. I dunno.
 #	if body.get_filename().ends_with("Player.tscn"):
 	if body.name == "Player":
-		print("body is a player!")
+		print("A player entered a ladder!")
 		body.climbing = true
 
 
 func _on_Ladder_body_exited(body):
-	print("body is: ", body.get_filename())
+#	print("body is: ", body.get_filename())
 #	if body.get_filename().ends_with("Player.tscn"):
 	if body.name == "Player":
-		print("body is a player!")
+		print("A player left a ladder!")
 		body.climbing = false

@@ -4,6 +4,7 @@ extends KinematicBody
 const GRAVITY = 9.8 * 3
 const WALK_SPEED = 10
 const SPRINT_SPEED = 20
+const SNEAK_SPEED = 5
 const ACCEL = 4
 const DEACCEL = 8
 const JUMP_HEIGHT = 15
@@ -22,6 +23,7 @@ var climbing = false
 var flying = false
 var sprinting = false
 var jumping = false
+var crouching = false
 
 # internal vars
 var velocity  = Vector3() # smoothed velocity
@@ -45,6 +47,8 @@ func _physics_process(delta):
 		fly(delta, FLY_SPEED)
 	elif climbing:
 		fly(delta, CLIMB_SPEED)
+	elif crouching:
+		walk(delta, SNEAK_SPEED)
 	elif sprinting:
 		walk(delta, SPRINT_SPEED)
 	else:
@@ -59,6 +63,8 @@ func fly(delta, speed):
 	# space to go up a bit
 	if jumping:
 		temp_direction += Vector3(0, 1, 0)
+	if crouching:
+		temp_direction += Vector3(0, -1, 0)
 	# normalize to player's fly speed
 	temp_direction = temp_direction.normalized()
 	temp_direction = temp_direction * speed
@@ -74,7 +80,6 @@ func walk(delta, speed):
 	temp_direction = temp_direction * speed
 	# Maintain gravity
 	temp_direction.y = velocity.y
-	
 	
 	# Determine ground contact using our tail
 	if is_on_floor():
@@ -113,13 +118,10 @@ func walk(delta, speed):
 			if velocity.y < 0:
 				velocity.y = 0
 			velocity.y += STAIR_JUMP_VEL
-			print($StairCatcher.get_collision_point(), get_global_transform().origin)
 			var stairheight = 1.5 - (get_global_transform().origin.y - $StairCatcher.get_collision_point().y)
-			print(stairheight)
+			print("Hit stair of height: ", stairheight)
 			move_and_collide(Vector3(0, stairheight * (1+STAIR_JUMP_STEP), 0))
 			has_ground_contact = false
-			
-		
 	
 	# Perform jumping
 	if has_ground_contact and jumping:
