@@ -10,7 +10,7 @@ const DEACCEL = 8
 const JUMP_HEIGHT = 15
 const FLY_SPEED = 20
 const FLY_ACCEL = 4
-const CLIMB_SPEED = 5
+const CLIMB_SPEED = 6
 const MAX_SLOPE_ANGLE = 35 # degrees
 const MAX_STAIR_SLOPE = 20
 const STAIR_JUMP_VEL = 0.2
@@ -46,7 +46,7 @@ func _physics_process(delta):
 	if flying:
 		fly(delta, FLY_SPEED)
 	elif climbing:
-		fly(delta, CLIMB_SPEED)
+		climb(delta, CLIMB_SPEED)
 	elif crouching:
 		walk(delta, SNEAK_SPEED)
 	elif sprinting:
@@ -56,6 +56,36 @@ func _physics_process(delta):
 			
 func aim(delta):
 	$Head.rotation = look_direction
+	
+func climb(delta, speed):
+	has_ground_contact = false
+	var temp_direction = move_direction
+	
+	# jump/crouch to go up and down the ladder
+	if jumping:
+		temp_direction += Vector3(0, 1, 0)
+	if crouching:
+		temp_direction += Vector3(0, -1, 0)
+	
+	# Orient the ClimbUpper
+	var cu_dir = temp_direction
+	cu_dir.y = 0
+	cu_dir = cu_dir.normalized() * 0.45 # fixed positioning based on body size
+	$ClimbUpper.translation.x = cu_dir.x
+	$ClimbUpper.translation.z = cu_dir.z
+	$ClimbUpper.cast_to = cu_dir.normalized() * 0.2 # fixed distance from body
+	
+	# Go up if we're pushing up against something while climbing
+	if (cu_dir.length() > 0) and $ClimbUpper.is_colliding():
+		print("Pushing up the ladder!")
+		temp_direction += Vector3(0, 1, 0)
+
+	# normalize to player's fly speed
+	temp_direction = temp_direction.normalized()
+	temp_direction = temp_direction * speed
+	
+	velocity = velocity.linear_interpolate(temp_direction, FLY_ACCEL * delta)
+	velocity = move_and_slide(velocity, Vector3(0, 1, 0))
 	
 func fly(delta, speed):
 	has_ground_contact = false
