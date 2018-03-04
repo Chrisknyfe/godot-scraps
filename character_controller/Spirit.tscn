@@ -1,12 +1,13 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://goldcube.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://goldcube-tex.png" type="Texture" id=2]
+[ext_resource path="res://Spirit.gd" type="Script" id=1]
+[ext_resource path="res://goldcube.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://goldcube-tex.png" type="Texture" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
 
 render_priority = 0
-flags_transparent = false
+flags_transparent = true
 flags_unshaded = false
 flags_vertex_lighting = false
 flags_no_depth_test = false
@@ -26,15 +27,15 @@ params_point_size = 1.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
-albedo_texture = ExtResource( 2 )
+albedo_color = Color( 1, 1, 1, 0.884 )
+albedo_texture = ExtResource( 3 )
 metallic = 0.5
 metallic_specular = 0.5
 metallic_texture_channel = 0
 roughness = 0.0
 roughness_texture_channel = 0
 emission_enabled = true
-emission = Color( 1, 0.796875, 0, 1 )
+emission = Color( 0, 0.882813, 1, 1 )
 emission_energy = 0.4
 emission_operator = 0
 emission_on_uv2 = false
@@ -60,35 +61,32 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Emission", "Flags", "Metallic" ]
 
-[sub_resource type="BoxShape" id=2]
+[node name="Spirit" type="Spatial" index="0"]
 
-extents = Vector3( 1, 1, 1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.208001, 7, 7.3437 )
+script = ExtResource( 1 )
+_sections_unfolded = [ "Pause", "Transform", "Visibility" ]
 
-[node name="Box" type="Area"]
+[node name="Camera" type="Camera" parent="." index="0"]
 
-input_ray_pickable = false
-input_capture_on_drag = false
-space_override = 0
-gravity_point = false
-gravity_distance_scale = 0.0
-gravity_vec = Vector3( 0, -1, 0 )
-gravity = 9.8
-linear_damp = 0.1
-angular_damp = 1.0
-priority = 0.0
-monitoring = true
-monitorable = true
-collision_layer = 1
-collision_mask = 1
-audio_bus_override = false
-audio_bus_name = "Master"
-reverb_bus_enable = false
-reverb_bus_name = "Master"
-reverb_bus_amount = 0.0
-reverb_bus_uniformity = 0.0
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5 )
+keep_aspect = 1
+cull_mask = 1048575
+environment = null
+h_offset = 0.0
+v_offset = 0.0
+doppler_tracking = 0
+projection = 0
+current = false
+fov = 70.0
+size = 1.0
+near = 0.05
+far = 200.0
+_sections_unfolded = [ "Transform" ]
 
-[node name="MeshInstance" type="MeshInstance" parent="." index="0"]
+[node name="Cube" type="MeshInstance" parent="." index="1"]
 
+transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -98,14 +96,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = ExtResource( 1 )
+mesh = ExtResource( 2 )
 skeleton = NodePath("..")
 material/0 = SubResource( 1 )
-_sections_unfolded = [ "material" ]
-
-[node name="CollisionShape" type="CollisionShape" parent="." index="1"]
-
-shape = SubResource( 2 )
-disabled = false
+_sections_unfolded = [ "Geometry", "LOD", "Transform", "Visibility", "material" ]
 
 

@@ -106,16 +106,31 @@ func _physics_process(delta):
 		else:
 			h.sprinting = false
 		
-		if $Sphere.visible:
-			$Sphere.visible = false
+		if $Cube.visible:
+			$Cube.visible = false
+			
+		# Reset velocity until the spirit decouples again
+		velocity_target = Vector3(0,1,0) * FLY_SPEED
 	else:
 		# Fly based on our own desired velocity
 		direction_target = direction_target * FLY_SPEED
 		velocity_target = velocity_target.linear_interpolate(direction_target, FLY_ACCEL * delta)
 		global_translate(velocity_target * delta)
 		
-		if !$Sphere.visible:
-			$Sphere.visible = true
+		if !$Cube.visible:
+			$Cube.visible = true
+		
+		# arbitrary measure of the "intensity" of the spirit's movement
+		var intensity = min(1.0, max(0.0, ((velocity_target.length()*1.5) / FLY_SPEED) - 0.1))
+		
+		# set sphere transparency
+		var mat = $Cube.get_surface_material(0)
+		mat.albedo_color.a = intensity
+
+		# rotate it
+		$Cube.rotate_x(deg2rad(215 * intensity * delta))
+		$Cube.rotate_y(deg2rad(300 * intensity * delta))
+		$Cube.rotate_z(deg2rad(203 * intensity * delta))
 	
 	rotation = slerp_euler_no_z(rotation, rot_target, 10 * delta)
 #
