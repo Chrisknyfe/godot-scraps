@@ -18,6 +18,8 @@ uniform sampler2D texture_refraction;
 uniform float refraction : hint_range(-16,16);
 uniform vec4 refraction_texture_channel;
 uniform float refraction_opacity : hint_range(0.0, 1.0);
+uniform float distance_fade_min;
+uniform float distance_fade_max;
 
 // Wave values are numbered since Godot's shading language does not support arrays yet
 
@@ -92,6 +94,8 @@ void vertex() {
 	vec3 normalWave4 = N(VERTEX.x, VERTEX.z, TIME, Steepness3, Amplitude4, Direction4, Frequency4, Speed4);
 	vec3 normalWave5 = N(VERTEX.x, VERTEX.z, TIME, Steepness3, Amplitude5, Direction5, Frequency5, Speed5);
 	NORMAL = (normalWave1 + normalWave2 + normalWave3 + normalWave4 + normalWave5) / 5.0;
+	
+	
 }
 
 void fragment() {
@@ -134,6 +138,9 @@ void fragment() {
 	EMISSION += textureLod(SCREEN_TEXTURE,ref_ofs,ROUGHNESS * 8.0).rgb * ref_amount;
 	ALBEDO *= 1.0 - ref_amount;
 	ALPHA = 1.0;
+	
+	// Distance fade
+	ALPHA*=clamp(smoothstep(distance_fade_min,distance_fade_max,-VERTEX.z),0.0,1.0);
 }"
 _sections_unfolded = [ "Resource" ]
 
@@ -145,30 +152,32 @@ shader_param/albedo = Color( 1, 1, 1, 1 )
 shader_param/refraction = 0.05
 shader_param/refraction_texture_channel = Plane( 1, 0, 0, 0 )
 shader_param/refraction_opacity = 0.2
+shader_param/distance_fade_min = 100.0
+shader_param/distance_fade_max = 80.0
 shader_param/Steepness1 = 1.0
 shader_param/Amplitude1 = null
 shader_param/Direction1 = null
-shader_param/Frequency1 = null
+shader_param/Frequency1 = 0.25
 shader_param/Speed1 = null
-shader_param/Steepness2 = 0.2
+shader_param/Steepness2 = 0.4
 shader_param/Amplitude2 = null
 shader_param/Direction2 = null
-shader_param/Frequency2 = null
+shader_param/Frequency2 = 0.3
 shader_param/Speed2 = null
 shader_param/Steepness3 = 0.2
 shader_param/Amplitude3 = null
 shader_param/Direction3 = null
-shader_param/Frequency3 = null
+shader_param/Frequency3 = 0.25
 shader_param/Speed3 = null
 shader_param/Steepness4 = 0.4
 shader_param/Amplitude4 = null
 shader_param/Direction4 = null
-shader_param/Frequency4 = null
+shader_param/Frequency4 = 0.75
 shader_param/Speed4 = null
 shader_param/Steepness5 = 0.4
 shader_param/Amplitude5 = null
 shader_param/Direction5 = null
-shader_param/Frequency5 = null
+shader_param/Frequency5 = 0.65
 shader_param/Speed5 = null
 shader_param/texture_albedo = ExtResource( 1 )
 shader_param/texture_refraction = ExtResource( 2 )

@@ -2,6 +2,7 @@ tool
 extends MeshInstance
 
 export(Material) 	var mat
+export(int)			var resolution = 100
 export(float) 		var scaleFactor = 0.10
 export(float)		var matScaleFactor = 1.0
 
@@ -13,12 +14,11 @@ func _ready():
 	  
 	surfTool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var width = 100
-	for z in range(-width/2, width/2):
-		for x in range(-width/2, width/2):
+	for z in range(-resolution/2, resolution/2):
+		for x in range(-resolution/2, resolution/2):
 			# +x is right, +z is down
 			
-			var f_width = float(width)
+			var f_width = float(resolution)
 			
 			var uv_ul = Vector2( x/f_width + 0.5, z/f_width + 0.5 ) * matScaleFactor
 			var vert_ul = Vector3(x, 0, z) * scaleFactor
@@ -59,12 +59,8 @@ func _ready():
 	self.set_surface_material(0, mat)
 
 #func _physics_process(delta):
-##	var camera_pos = $'../Camera'.translation
 #	var camera = $'../Camera'
 #	if camera:
-##		print(camera)
 #		var camera_pos = camera.translation
 #		translation.x = camera_pos.x 
 #		translation.z = camera_pos.z
-#	#	print(translation)
-##	pass

@@ -3,7 +3,7 @@
 
 extends Camera
 
-const MOVE_SPEED = 1
+const MOVE_SPEED = 2
 const MOUSE_SENSITIVITY = 0.002
 onready var speed = 1
 onready var velocity = Vector3()
