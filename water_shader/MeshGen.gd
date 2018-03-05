@@ -5,6 +5,7 @@ export(Material) 	var mat
 export(int)			var resolution = 100
 export(float) 		var scaleFactor = 0.10
 export(float)		var matScaleFactor = 1.0
+export(float)		var follow_accel = 0.5
 
 # Due to the "tool" keyword at the top of this file
 # this function already executes in the editor
@@ -58,9 +59,11 @@ func _ready():
 	self.set_mesh(mesh)
 	self.set_surface_material(0, mat)
 
-#func _physics_process(delta):
-#	var camera = $'../Camera'
-#	if camera:
-#		var camera_pos = camera.translation
-#		translation.x = camera_pos.x 
-#		translation.z = camera_pos.z
+func _physics_process(delta):
+	var camera = $'../Camera'
+	if camera:
+		var camera_pos = camera.translation
+		var target_pos = translation
+		target_pos = target_pos.linear_interpolate(camera_pos, follow_accel * delta)
+		translation.x = target_pos.x 
+		translation.z = target_pos.z

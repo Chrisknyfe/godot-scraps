@@ -1,7 +1,8 @@
-[gd_resource type="ShaderMaterial" load_steps=4 format=2]
+[gd_resource type="ShaderMaterial" load_steps=5 format=2]
 
-[ext_resource path="res://foam.png" type="Texture" id=1]
-[ext_resource path="res://generic_water.png" type="Texture" id=2]
+[ext_resource path="res://ocean_albedo.png" type="Texture" id=1]
+[ext_resource path="res://foam.png" type="Texture" id=2]
+[ext_resource path="res://generic_water.png" type="Texture" id=3]
 
 [sub_resource type="Shader" id=1]
 
@@ -14,12 +15,19 @@ shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_disabled,diffuse_burley,specular_schlick_ggx;
 uniform vec4 albedo: hint_color;
 uniform sampler2D texture_albedo: hint_albedo;
+
+uniform sampler2D texture_foam: hint_albedo;
+
 uniform sampler2D texture_refraction;
 uniform float refraction : hint_range(-16,16);
 uniform vec4 refraction_texture_channel;
 uniform float refraction_opacity : hint_range(0.0, 1.0);
+
 uniform float distance_fade_min;
 uniform float distance_fade_max;
+
+uniform float specular : hint_range(0.0, 1.0);
+uniform float roughness : hint_range(0.0, 1.0);
 
 // Wave values are numbered since Godot's shading language does not support arrays yet
 
@@ -99,8 +107,8 @@ void vertex() {
 }
 
 void fragment() {
-	SPECULAR = float(1.0);
-	ROUGHNESS = float(0.001);
+	SPECULAR = specular;
+	ROUGHNESS = roughness;
 	
 	// Apply some wavey movement of the albedo tex
 	vec2 base_uv = UV;
@@ -116,11 +124,11 @@ void fragment() {
 	vec2 wavevec = base_uv * 15.0;
 	vec3 vertexWave1 = P(wavevec.x, wavevec.y, TIME, Steepness1, Amplitude1, Direction1, Frequency1, 0.4);
 	vec3 vertexWave4 = P(wavevec.x, wavevec.y, TIME, Steepness4, Amplitude4, Direction4, Frequency4, 0.3);
-	vec3 vertexWave = ((vertexWave1 + vertexWave4) / 4.0) + 0.25;
-	albedo_tex = albedo_tex * clamp(vertexWave.y, 0.0, 1.0);
+	vec3 vertexWave = ((vertexWave1 + vertexWave4) / 2.0) + 0.25;
+	vec4 foam_tex = texture(texture_foam, base_uv) * clamp(vertexWave.y, 0.0, 1.0);
 //    ALBEDO = vec3(0, 0, 1.0); //albedo_tex.rgb; 	// Just blue for now
 	ALBEDO = albedo.rgb * albedo_tex.rgb;
-	//ALPHA = 0.9;//COLOR.a;
+	//ALPHA = albedo.a * albedo_tex.a;
 	
 	
 	/* Refraction
@@ -139,6 +147,10 @@ void fragment() {
 	ALBEDO *= 1.0 - ref_amount;
 	ALPHA = 1.0;
 	
+	// Sea Foam; override refraction and add to albedo
+	EMISSION *= (1.0-foam_tex.rgb);
+	ALBEDO += foam_tex.rgb;
+	
 	// Distance fade
 	ALPHA*=clamp(smoothstep(distance_fade_min,distance_fade_max,-VERTEX.z),0.0,1.0);
 }"
@@ -148,12 +160,14 @@ _sections_unfolded = [ "Resource" ]
 
 render_priority = 0
 shader = SubResource( 1 )
-shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/albedo = Color( 1, 1, 1, 0.458549 )
 shader_param/refraction = 0.05
 shader_param/refraction_texture_channel = Plane( 1, 0, 0, 0 )
-shader_param/refraction_opacity = 0.2
-shader_param/distance_fade_min = 100.0
-shader_param/distance_fade_max = 80.0
+shader_param/refraction_opacity = 0.7
+shader_param/distance_fade_min = 200.0
+shader_param/distance_fade_max = 150.0
+shader_param/specular = 1.0
+shader_param/roughness = 0.05
 shader_param/Steepness1 = 1.0
 shader_param/Amplitude1 = null
 shader_param/Direction1 = null
@@ -180,6 +194,7 @@ shader_param/Direction5 = null
 shader_param/Frequency5 = 0.65
 shader_param/Speed5 = null
 shader_param/texture_albedo = ExtResource( 1 )
-shader_param/texture_refraction = ExtResource( 2 )
+shader_param/texture_foam = ExtResource( 2 )
+shader_param/texture_refraction = ExtResource( 3 )
 _sections_unfolded = [ "shader_param" ]
 
