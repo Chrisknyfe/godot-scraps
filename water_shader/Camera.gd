@@ -41,7 +41,7 @@ func _input(event):
 func _physics_process(delta):
 	# Speed modifier
 	if Input.is_action_pressed("move_speed"):
-		speed = 2
+		speed = 4
 	else:
 		speed = 1
 
