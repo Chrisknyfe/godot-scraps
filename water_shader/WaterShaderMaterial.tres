@@ -79,6 +79,13 @@ uniform float 	Speed5 	   = 1;
 
 
 // A point on a Gerstner Wave
+/*
+ * x & z: wave position
+ * t: time
+ * Steepness: physical height of the wave
+ * Amplitude: also height, but affects the normal more.
+ * Direction, Frequency, Speed: self explanatory
+ */
 vec3 P(float x, float z, float t, float Steepness, float Amplitude, vec2 Direction, float Frequency, float Speed) {
 	vec3 result;
 	result.x = x + ((Steepness * Amplitude) * Direction.x * cos(dot(Frequency * Direction, vec2(x, z)) + (Speed * t)));
@@ -228,29 +235,29 @@ shader_param/roughness = 0.05
 shader_param/use_world_xz = true
 shader_param/UV_scale = Vector2( 50, 50 )
 shader_param/UV_offset = Vector2( 0, 0 )
-shader_param/debug_time_invariant = null
+shader_param/debug_time_invariant = false
 shader_param/Steepness1 = 2.0
-shader_param/Amplitude1 = 0.2
-shader_param/Direction1 = null
+shader_param/Amplitude1 = 0.15
+shader_param/Direction1 = Vector2( 1, 0 )
 shader_param/Frequency1 = 0.25
 shader_param/Speed1 = null
 shader_param/Steepness2 = 1.0
-shader_param/Amplitude2 = 0.4
-shader_param/Direction2 = null
+shader_param/Amplitude2 = 0.2
+shader_param/Direction2 = Vector2( 0.710611, -0.703585 )
 shader_param/Frequency2 = 0.3
 shader_param/Speed2 = null
 shader_param/Steepness3 = 0.4
-shader_param/Amplitude3 = 0.2
+shader_param/Amplitude3 = 0.1
 shader_param/Direction3 = null
 shader_param/Frequency3 = 0.25
 shader_param/Speed3 = null
 shader_param/Steepness4 = 0.6
-shader_param/Amplitude4 = 0.2
+shader_param/Amplitude4 = 0.1
 shader_param/Direction4 = null
 shader_param/Frequency4 = 0.75
 shader_param/Speed4 = null
 shader_param/Steepness5 = 0.6
-shader_param/Amplitude5 = 0.4
+shader_param/Amplitude5 = 0.2
 shader_param/Direction5 = null
 shader_param/Frequency5 = 0.65
 shader_param/Speed5 = null
