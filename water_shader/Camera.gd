@@ -12,6 +12,9 @@ onready var initial_rotation = PI/2
 func _enter_tree():
 	# Capture the mouse (can be toggled by pressing F10)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+func _ready():
+	OS.set_window_maximized(true)
 
 func _input(event):
 	# Horizontal mouse look
@@ -37,6 +40,7 @@ func _input(event):
 		get_tree().reload_current_scene()
 	if Input.is_action_just_pressed("quit"):
 		get_tree().quit()
+		
 
 func _physics_process(delta):
 	# Speed modifier
