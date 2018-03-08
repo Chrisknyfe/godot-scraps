@@ -38,8 +38,9 @@ uniform bool use_world_xz;
 uniform vec2 UV_scale;
 uniform vec2 UV_offset;
 
-uniform bool debug_time_invariant; // ZA WARUDO! Toki wo tomare.
+uniform bool vertex_waves_enabled;
 
+uniform bool debug_time_invariant; // ZA WARUDO! Toki wo tomare.
 // Wave values are numbered since Godot's shading language does not support arrays yet
 
 // Values for wave 1
@@ -112,27 +113,31 @@ void vertex() {
 	if (use_world_xz)
 	{
 		wave_coords = (WORLD_MATRIX * vec4(VERTEX,1)).xz;
-		UV = wave_coords / UV_scale + UV_offset; 
+		UV = wave_coords / UV_scale + UV_offset;
 	}
 	
 	float time = TIME; //TIME;
 	if (debug_time_invariant)
 	{
-		time = 1.0	
+		time = 1.0;
 	}
 	
-	// Calculate offset for every wave, take average
-	vec3 vertexWave1 = P(wave_coords.x, wave_coords.y, time, Steepness1, Amplitude1, Direction1, Frequency1, Speed1);
-	vec3 vertexWave2 = P(wave_coords.x, wave_coords.y, time, Steepness2, Amplitude2, Direction2, Frequency2, Speed2);
-	vec3 vertexWave3 = P(wave_coords.x, wave_coords.y, time, Steepness3, Amplitude3, Direction3, Frequency3, Speed3);
-	vec3 vertexWave4 = P(wave_coords.x, wave_coords.y, time, Steepness4, Amplitude4, Direction4, Frequency4, Speed4);
-	vec3 vertexWave5 = P(wave_coords.x, wave_coords.y, time, Steepness5, Amplitude5, Direction5, Frequency5, Speed5);
-	vec3 vertexWaveFinal = (vertexWave1 + vertexWave2 + vertexWave3 + vertexWave4 + vertexWave5) / 5.0;
-	// remap wave offsets to vertex space
-	vertexWaveFinal.x = vertexWaveFinal.x - wave_coords.x + VERTEX.x;
-	vertexWaveFinal.z = vertexWaveFinal.z - wave_coords.y + VERTEX.z; 
-	VERTEX = vertexWaveFinal;
-	
+	if (vertex_waves_enabled)
+	{
+		// Calculate offset for every wave, take average
+		vec3 vertexWave1 = P(wave_coords.x, wave_coords.y, time, Steepness1, Amplitude1, Direction1, Frequency1, Speed1);
+		vec3 vertexWave2 = P(wave_coords.x, wave_coords.y, time, Steepness2, Amplitude2, Direction2, Frequency2, Speed2);
+		vec3 vertexWave3 = P(wave_coords.x, wave_coords.y, time, Steepness3, Amplitude3, Direction3, Frequency3, Speed3);
+		vec3 vertexWave4 = P(wave_coords.x, wave_coords.y, time, Steepness4, Amplitude4, Direction4, Frequency4, Speed4);
+		vec3 vertexWave5 = P(wave_coords.x, wave_coords.y, time, Steepness5, Amplitude5, Direction5, Frequency5, Speed5);
+		vec3 vertexWaveFinal = (vertexWave1 + vertexWave2 + vertexWave3 + vertexWave4 + vertexWave5) / 5.0;
+		// remap wave to become an offset for the vertex
+		vertexWaveFinal.x = vertexWaveFinal.x - wave_coords.x;
+		vertexWaveFinal.z = vertexWaveFinal.z - wave_coords.y; 
+		
+		VERTEX += vertexWaveFinal;
+		
+	}
 	// Calculate normal for each wave, take average
 	vec3 normalWave1 = N(wave_coords.x, wave_coords.y, time, Steepness1, Amplitude1, Direction1, Frequency1, Speed1);
 	vec3 normalWave2 = N(wave_coords.x, wave_coords.y, time, Steepness2, Amplitude2, Direction2, Frequency2, Speed2);
@@ -150,7 +155,7 @@ void fragment() {
 	float time = TIME; //TIME;
 	if (debug_time_invariant)
 	{
-		time = 1.0	
+		time = 1.0;
 	}
 	
 	// Apply some wavey movement to the general UV coords 
@@ -239,6 +244,7 @@ shader_param/roughness = 0.05
 shader_param/use_world_xz = true
 shader_param/UV_scale = Vector2( 50, 50 )
 shader_param/UV_offset = Vector2( 0, 0 )
+shader_param/vertex_waves_enabled = true
 shader_param/debug_time_invariant = false
 shader_param/Steepness1 = 2.5
 shader_param/Amplitude1 = 0.15

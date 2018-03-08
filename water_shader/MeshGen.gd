@@ -1,7 +1,6 @@
 tool 
 extends MeshInstance
 
-export(Material) 	var mat
 export(int)			var resolution = 100
 export(float) 		var scaleFactor = 0.10
 export(float)		var quadraticFactor = 0.09
@@ -23,6 +22,8 @@ func _ready():
 	build_mesh()
 	
 func build_mesh():
+	
+	var mat = get_surface_material(0)
 	var surfTool = SurfaceTool.new()
 	var mesh = Mesh.new()
 	  

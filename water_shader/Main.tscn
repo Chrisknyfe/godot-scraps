@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://WaterShaderMaterial.tres" type="Material" id=1]
 [ext_resource path="res://MeshGen.gd" type="Script" id=2]
@@ -899,6 +899,14 @@ shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
 shader_param/texture_albedo = ExtResource( 6 )
 
+[sub_resource type="SphereMesh" id=27]
+
+radius = 10.0
+height = 20.0
+radial_segments = 64
+rings = 32
+is_hemisphere = false
+
 [node name="Main" type="Spatial" index="0"]
 
 _sections_unfolded = [ "Transform" ]
@@ -920,7 +928,6 @@ skeleton = NodePath("..")
 material/0 = ExtResource( 1 )
 script = ExtResource( 2 )
 _sections_unfolded = [ "Transform", "material" ]
-mat = ExtResource( 1 )
 resolution = 150
 scaleFactor = 2.4
 quadraticFactor = 0.009
@@ -1209,5 +1216,22 @@ mesh = SubResource( 11 )
 skeleton = NodePath("..")
 material/0 = SubResource( 26 )
 _sections_unfolded = [ "Transform", "material" ]
+
+[node name="MeshInstance" type="MeshInstance" parent="." index="6"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 23, 66 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 27 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 1 )
+_sections_unfolded = [ "material" ]
 
 
