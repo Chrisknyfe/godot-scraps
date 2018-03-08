@@ -945,7 +945,7 @@ refresh_editor_mesh = false
 
 [node name="OceanFloor" type="MeshInstance" parent="OceanMesh" index="0"]
 
-transform = Transform( 600, 0, 0, 0, 1, 0, 0, 0, 600, -1, -16, -1 )
+transform = Transform( 320, 0, 0, 0, 1, 0, 0, 0, 320, -1, -16, -1 )
 layers = 1
 material_override = null
 cast_shadow = 1
