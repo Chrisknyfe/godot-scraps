@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=2]
 
 [ext_resource path="res://ocean_albedo.png" type="Texture" id=1]
-[ext_resource path="res://foam.png" type="Texture" id=2]
+[ext_resource path="res://foam_alpha.png" type="Texture" id=2]
 [ext_resource path="res://generic_water.png" type="Texture" id=3]
 
 [sub_resource type="Shader" id=1]
@@ -203,7 +203,6 @@ void fragment() {
 	/* Sea Foam
 	 * override refraction and add to albedo
 	 * scale foam opacity by height of a few of the vertex waves. 
-	 * It's hard to line up the waves in both UV and VERTEX space. Just doing the best I can. Maybe there's a way to get vertex height here?
 	 */
 	if (foam_enabled)
 	{
@@ -212,8 +211,8 @@ void fragment() {
 		vec3 vertexWave4 = P(wavevec.x, wavevec.y, time, Steepness4, Amplitude4, Direction4, Frequency4, 0.3);
 		vec3 vertexWave = ((vertexWave1 + vertexWave4) / 2.0) + 0.25;
 		vec4 foam_tex = texture(texture_foam, base_uv) * clamp(vertexWave.y, 0.0, 1.0);
-		EMISSION *= (1.0-foam_tex.rgb); // TODO: use foam_tex.a to block emission rather than assuming foam is white
-		ALBEDO += foam_tex.rgb;
+		EMISSION *= (1.0-foam_tex.a); // block emission
+		ALBEDO = ALBEDO*(1.0-foam_tex.a) + foam_tex.rgb*foam_tex.a; // overwrite albedo
 	}
 	
 	// Distance fade

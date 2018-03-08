@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://WaterShaderMaterial.tres" type="Material" id=1]
 [ext_resource path="res://MeshGen.gd" type="Script" id=2]
@@ -90,14 +90,6 @@ size = Vector3( 2, 2, 2 )
 subdivide_width = 0
 subdivide_height = 0
 subdivide_depth = 0
-
-[sub_resource type="SphereMesh" id=27]
-
-radius = 20.0
-height = 40.0
-radial_segments = 64
-rings = 32
-is_hemisphere = false
 
 [sub_resource type="SpatialMaterial" id=5]
 
@@ -908,6 +900,21 @@ shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
 shader_param/texture_albedo = ExtResource( 6 )
 
+[sub_resource type="SphereMesh" id=27]
+
+radius = 20.0
+height = 40.0
+radial_segments = 64
+rings = 32
+is_hemisphere = false
+
+[sub_resource type="CubeMesh" id=28]
+
+size = Vector3( 20, 20, 20 )
+subdivide_width = 0
+subdivide_height = 0
+subdivide_depth = 0
+
 [node name="Main" type="Spatial" index="0"]
 
 _sections_unfolded = [ "Transform" ]
@@ -953,59 +960,9 @@ skeleton = NodePath("..")
 material/0 = SubResource( 3 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="LucaStadium" type="MeshInstance" parent="." index="1"]
+[node name="TurtleRock" type="Spatial" parent="." index="1"]
 
-transform = Transform( 28.8, 0, 0, 0, 3, 0, 0, 0, 28.8, 46.3169, 0, 160.958 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
-skeleton = NodePath("..")
-material/0 = null
-_sections_unfolded = [ "Transform", "material" ]
-
-[node name="Water_Ball" type="MeshInstance" parent="LucaStadium" index="0"]
-
-transform = Transform( 0.0347222, 0, 0, 0, 0.333333, 0, 0, 0, 0.0347222, 0, 10, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 27 )
-skeleton = NodePath("..")
-material/0 = ExtResource( 1 )
-_sections_unfolded = [ "Transform", "material" ]
-
-[node name="InnerBox" type="MeshInstance" parent="LucaStadium/Water_Ball" index="0"]
-
-transform = Transform( 3.59014, -6.66356, 2.58996, 4.3334, 4.3334, 5.1423, -5.68617, -0.904786, 5.55418, 0, 0, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
-skeleton = NodePath("..")
-material/0 = SubResource( 5 )
-_sections_unfolded = [ "Transform", "material" ]
-
-[node name="TurtleRock" type="Spatial" parent="." index="2"]
-
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26.3169, 0, 25.9577 )
 _sections_unfolded = [ "Transform" ]
 
@@ -1077,7 +1034,7 @@ skeleton = NodePath("..")
 material/0 = SubResource( 8 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="3"]
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="2"]
 
 transform = Transform( 1, 0, 0, 0, -0.939692, 0.34202, 0, -0.34202, -0.939692, 0, 40, 0 )
 layers = 1
@@ -1105,11 +1062,11 @@ directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
 _sections_unfolded = [ "Directional Shadow", "Editor", "Light", "Shadow", "Transform" ]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="4"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="3"]
 
 environment = SubResource( 10 )
 
-[node name="Camera" type="Camera" parent="." index="5"]
+[node name="Camera" type="Camera" parent="." index="4"]
 
 transform = Transform( -0.870426, 0, -0.492299, 0, 1, 0, 0.492299, 0, -0.870426, 0, 2.76038, 0 )
 keep_aspect = 1
@@ -1127,8 +1084,9 @@ far = 200.0
 script = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Scraps" type="Spatial" parent="." index="6"]
+[node name="Scraps" type="Spatial" parent="." index="5"]
 
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 6, 23 )
 visible = false
 _sections_unfolded = [ "Visibility" ]
@@ -1267,6 +1225,59 @@ lod_max_hysteresis = 0.0
 mesh = SubResource( 11 )
 skeleton = NodePath("..")
 material/0 = SubResource( 26 )
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="LucaStadium" type="Spatial" parent="." index="6"]
+
+[node name="Water_Ball" type="MeshInstance" parent="LucaStadium" index="0"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 46.3169, 30, 160.958 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 27 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="InnerBox" type="MeshInstance" parent="LucaStadium" index="1"]
+
+transform = Transform( 0.707107, 0, 0.707107, -0.579228, 0.573576, 0.579228, -0.40558, -0.819152, 0.40558, 46.3169, 73, 160.958 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 28 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="Platform" type="MeshInstance" parent="LucaStadium" index="2"]
+
+transform = Transform( 28.8, 0, 0, 0, 3, 0, 0, 0, 28.8, 46.3169, 0, 160.958 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 4 )
+skeleton = NodePath("..")
+material/0 = null
 _sections_unfolded = [ "Transform", "material" ]
 
 
