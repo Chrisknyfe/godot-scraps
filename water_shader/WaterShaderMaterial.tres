@@ -157,7 +157,6 @@ void vertex() {
 		UV = uv_tri.xz;
 	}
 	
-	refraction_uv = UV;
 	// Apply some wavey movement to the general UV coords
 	if (albedo_wave_enabled)
 	{
@@ -177,12 +176,20 @@ void vertex() {
 			uvwave += P(UV.x, UV.y, time, Steepness3 * 0.1, Amplitude3 * 1.0, vec2(1.0,-1.0), round(Frequency3 * 15.0), Speed3 * 0.25);
 		}
 		UV += uvwave.xz;
-		refraction_uv += uvwave.xz;
 	}
-	uv_tri += vec3(0.1) * time;
+	
+	// Apply some constant movement 
+	if (world_triplanar)
+	{
+		refraction_uv_tri = uv_tri;
+		refraction_uv_tri += vec3(0.1, -0.2, -0.15) * time;
+	
+		uv_tri += vec3(0.1) * time;
+	}
+	refraction_uv = UV;
+	refraction_uv += vec2(0.1, 0.2) * time;
+	
 	UV += vec2(0.1)* time;
-	refraction_uv.x += time * 0.1;
-	refraction_uv.y += time * 0.2;
 	
 	// Calcualte foam alpha here where it's cheaper
 	foam_alpha = 1.0;
@@ -262,8 +269,17 @@ void fragment() {
 	 */
 	if (refraction_enabled) 
 	{
+		vec4 ref_tex;
+		if (world_triplanar)
+		{
+			ref_tex = triplanar_texture(texture_refraction, uv_power_normal, refraction_uv_tri);
+		}
+		else
+		{
+			ref_tex = texture(texture_refraction,refraction_uv);
+		}
 		vec3 ref_normal = NORMAL;
-		vec2 ref_ofs = SCREEN_UV - ref_normal.xy * dot(texture(texture_refraction,refraction_uv),refraction_texture_channel) * refraction;
+		vec2 ref_ofs = SCREEN_UV - ref_normal.xy * dot(ref_tex, refraction_texture_channel) * refraction;
 		float ref_amount = (1.0 - albedo.a * albedo_tex.a) * refraction_opacity;
 		EMISSION += textureLod(SCREEN_TEXTURE,ref_ofs,ROUGHNESS * 8.0).rgb * ref_amount;
 		ALBEDO *= 1.0 - ref_amount;
@@ -306,7 +322,7 @@ _sections_unfolded = [ "Resource" ]
 
 render_priority = 0
 shader = SubResource( 1 )
-shader_param/albedo = Color( 1, 1, 1, 0.607726 )
+shader_param/albedo = Color( 1, 1, 1, 0.33702 )
 shader_param/albedo_wave_enabled = true
 shader_param/foam_enabled = true
 shader_param/refraction_enabled = true
