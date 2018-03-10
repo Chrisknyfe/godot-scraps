@@ -34,9 +34,10 @@ uniform float distance_fade_max;
 uniform float specular : hint_range(0.0, 1.0);
 uniform float roughness : hint_range(0.0, 1.0);
 
-uniform bool use_world_xz;
-uniform vec2 UV_scale;
-uniform vec2 UV_offset;
+uniform bool world_triplanar;
+uniform float uv_blend_sharpness;
+uniform vec3 uv_tri_scale;
+uniform vec3 uv_tri_offset;
 
 uniform bool vertex_waves_enabled;
 
@@ -81,9 +82,12 @@ uniform float 	Speed5 	   = 1;
 
 
 varying vec2	refraction_uv;
+varying vec3	uv_tri;
+varying vec3	refraction_uv_tri;
+varying vec3	uv_power_normal;
 varying float	foam_alpha;
 
-// A point on a Gerstner Wave
+// An offset at a point on a Gerstner Wave
 /*
  * x & z: wave position
  * t: time
@@ -94,9 +98,9 @@ varying float	foam_alpha;
 vec3 P(float x, float z, float t, float Steepness, float Amplitude, vec2 Direction, float Frequency, float Speed) {
 	float twopi = 6.283185307179586;
 	vec3 result;
-	result.x = x + ((Steepness * Amplitude) * Direction.x * cos(twopi * dot(Frequency * Direction, vec2(x, z)) + (Speed * t)));
+	result.x = ((Steepness * Amplitude) * Direction.x * cos(twopi * dot(Frequency * Direction, vec2(x, z)) + (Speed * t)));
 	result.y = Steepness * sin(twopi * dot(Frequency * Direction, vec2(x, z)) + (Speed * t));
-	result.z = z + ((Steepness * Amplitude) * Direction.y * cos(twopi * dot(Frequency * Direction, vec2(x, z)) + (Speed * t)));
+	result.z = ((Steepness * Amplitude) * Direction.y * cos(twopi * dot(Frequency * Direction, vec2(x, z)) + (Speed * t)));
 	
 	return result;
 }
@@ -138,10 +142,19 @@ void vertex() {
 	
 	// UV will be assigned based on xz world coords
 	vec2 wave_coords = VERTEX.xz;
-	if (use_world_xz)
+	if (world_triplanar)
 	{
-		wave_coords = (WORLD_MATRIX * vec4(VERTEX,1)).xz;
-		UV = wave_coords / UV_scale + UV_offset;
+		vec4 world_coordinates = WORLD_MATRIX * vec4(VERTEX,1);
+		
+		// Define triplanar UV
+		uv_power_normal=pow(abs(NORMAL),vec3(uv_blend_sharpness));
+		uv_power_normal/=dot(uv_power_normal,vec3(1.0));
+		uv_tri = (world_coordinates).xyz / uv_tri_scale + uv_tri_offset;
+		uv_tri *= vec3(1.0,-1.0, 1.0);
+	
+		// Keep UV based on world XZ around as inputs to various wave functions
+		wave_coords = world_coordinates.xz;
+		UV = uv_tri.xz;
 	}
 	
 	refraction_uv = UV;
@@ -149,13 +162,25 @@ void vertex() {
 	if (albedo_wave_enabled)
 	{
 		// Throw in a bunch of constants to make these VERTEX waves look good in UV space
-		vec3 uvwave = P(UV.x, UV.y, time, Steepness2 * 0.1, Amplitude2 * 0.1, Direction2, Frequency2 * 15.0, Speed2 * 0.25);
-		uvwave += P(UV.x, UV.y, time, Steepness3 * 0.1, Amplitude3 * 0.1, Direction3, Frequency3 * 15.0, Speed3 * 0.25);
-		uvwave *- 0.5;
+		vec3 uvwave;
+		if (world_triplanar)
+		{ 
+			// We can take any frequencies and direction since we're not worried about texture seaming
+			uvwave= P(UV.x, UV.y, time, Steepness2 * 0.1, Amplitude2 * 1.0, Direction2, Frequency2 * 15.0, Speed2 * 0.25);
+			uvwave += P(UV.x, UV.y, time, Steepness3 * 0.1, Amplitude3 * 1.0, Direction3, Frequency3 * 15.0, Speed3 * 0.25);
+			uv_tri += uvwave;
+		}
+		else
+		{
+			// Fix direction and round frequency to respect texture wrapping on spherical meshes
+			uvwave = P(UV.x, UV.y, time, Steepness2 * 0.1, Amplitude2 * 1.0, vec2(1.0,1.0), round(Frequency2 * 15.0), Speed2 * 0.25);
+			uvwave += P(UV.x, UV.y, time, Steepness3 * 0.1, Amplitude3 * 1.0, vec2(1.0,-1.0), round(Frequency3 * 15.0), Speed3 * 0.25);
+		}
 		UV += uvwave.xz;
 		refraction_uv += uvwave.xz;
 	}
-	UV.x += time * 0.1;
+	uv_tri += vec3(0.1) * time;
+	UV += vec2(0.1)* time;
 	refraction_uv.x += time * 0.1;
 	refraction_uv.y += time * 0.2;
 	
@@ -179,14 +204,9 @@ void vertex() {
 		vec3 vertexWave4 = P(wave_coords.x, wave_coords.y, time, Steepness4, Amplitude4, Direction4, Frequency4, Speed4);
 		vec3 vertexWave5 = P(wave_coords.x, wave_coords.y, time, Steepness5, Amplitude5, Direction5, Frequency5, Speed5);
 		vec3 vertexWaveFinal = (vertexWave1 + vertexWave2 + vertexWave3 + vertexWave4 + vertexWave5) / 5.0;
-		// remap wave to become an offset for the vertex
-		vertexWaveFinal.x = vertexWaveFinal.x - wave_coords.x;
-		vertexWaveFinal.z = vertexWaveFinal.z - wave_coords.y; 
 		
 		vertexWaveFinal = rotate_to_normal(vertexWaveFinal, NORMAL);
-		
 		VERTEX += vertexWaveFinal;
-		
 	}
 	// Calculate normal for each wave, take average
 	vec3 normalWave1 = N(wave_coords.x, wave_coords.y, time, Steepness1, Amplitude1, Direction1, Frequency1, Speed1);
@@ -198,6 +218,14 @@ void vertex() {
 	vec3 rotNormal = rotate_to_normal(normalWaveFinal, NORMAL);
 	NORMAL = normalize(rotNormal);
 	
+}
+
+vec4 triplanar_texture(sampler2D p_sampler,vec3 p_weights,vec3 p_triplanar_pos) {
+	vec4 samp=vec4(0.0);
+	samp+= texture(p_sampler,p_triplanar_pos.xy) * p_weights.z;
+	samp+= texture(p_sampler,p_triplanar_pos.xz) * p_weights.y;
+	samp+= texture(p_sampler,p_triplanar_pos.zy * vec2(-1.0,1.0)) * p_weights.x;
+	return samp;
 }
 
 void fragment() {
@@ -213,7 +241,15 @@ void fragment() {
 	ROUGHNESS = roughness;
 	
 	
-	vec4 albedo_tex = texture(texture_albedo, UV);
+	vec4 albedo_tex;
+	if (world_triplanar)
+	{
+		albedo_tex = triplanar_texture(texture_albedo, uv_power_normal, uv_tri);
+	}
+	else
+	{
+		albedo_tex = texture(texture_albedo, UV);
+	}
 	ALBEDO = albedo.rgb * albedo_tex.rgb;
 	
 	/* Refraction
@@ -244,7 +280,15 @@ void fragment() {
 	 */
 	if (foam_enabled)
 	{
-		vec4 foam_tex = texture(texture_foam, UV) * clamp(foam_alpha, 0.0, 1.0);
+		vec4 foam_tex;
+		if (world_triplanar)
+		{
+			foam_tex = triplanar_texture(texture_foam, uv_power_normal, uv_tri)  * clamp(foam_alpha, 0.0, 1.0);
+		}
+		else
+		{
+			foam_tex = texture(texture_foam, UV) * clamp(foam_alpha, 0.0, 1.0);
+		}
 		EMISSION *= (1.0-foam_tex.a); // block emission
 		ALBEDO = ALBEDO*(1.0-foam_tex.a) + foam_tex.rgb*foam_tex.a; // overwrite albedo
 	}
@@ -262,9 +306,9 @@ _sections_unfolded = [ "Resource" ]
 
 render_priority = 0
 shader = SubResource( 1 )
-shader_param/albedo = Color( 1, 1, 1, 0.497255 )
+shader_param/albedo = Color( 1, 1, 1, 0.607726 )
 shader_param/albedo_wave_enabled = true
-shader_param/foam_enabled = false
+shader_param/foam_enabled = true
 shader_param/refraction_enabled = true
 shader_param/refraction = 0.1
 shader_param/refraction_texture_channel = Plane( 1, 0, 0, 0 )
@@ -274,9 +318,10 @@ shader_param/distance_fade_min = 200.0
 shader_param/distance_fade_max = 150.0
 shader_param/specular = 1.0
 shader_param/roughness = 0.05
-shader_param/use_world_xz = false
-shader_param/UV_scale = Vector2( 50, 50 )
-shader_param/UV_offset = Vector2( 0, 0 )
+shader_param/world_triplanar = true
+shader_param/uv_blend_sharpness = 2.0
+shader_param/uv_tri_scale = Vector3( 36, 36, 36 )
+shader_param/uv_tri_offset = Vector3( 0, 0, 0 )
 shader_param/vertex_waves_enabled = true
 shader_param/debug_time_invariant = false
 shader_param/Steepness1 = 4.0
