@@ -1,13 +1,14 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://WaterShaderMaterial.tres" type="Material" id=1]
 [ext_resource path="res://MeshGen.gd" type="Script" id=2]
 [ext_resource path="res://Sand.png" type="Texture" id=3]
 [ext_resource path="res://UV_checker_grid_dark.png" type="Texture" id=4]
 [ext_resource path="res://Camera.gd" type="Script" id=5]
-[ext_resource path="res://foam.png" type="Texture" id=6]
-[ext_resource path="res://ocean_albedo.png" type="Texture" id=7]
-[ext_resource path="res://generic_water.png" type="Texture" id=8]
+[ext_resource path="res://FPSCounter.gd" type="Script" id=6]
+[ext_resource path="res://foam.png" type="Texture" id=7]
+[ext_resource path="res://ocean_albedo.png" type="Texture" id=8]
+[ext_resource path="res://generic_water.png" type="Texture" id=9]
 
 [sub_resource type="ArrayMesh" id=1]
 
@@ -517,7 +518,7 @@ shader_param/uv1_scale = Vector3( 1, 1, 1 )
 shader_param/uv1_offset = Vector3( 0, 0, 0 )
 shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/texture_albedo = ExtResource( 6 )
+shader_param/texture_albedo = ExtResource( 7 )
 
 [sub_resource type="Shader" id=18]
 
@@ -578,8 +579,8 @@ shader_param/uv1_scale = Vector3( 1, 1, 1 )
 shader_param/uv1_offset = Vector3( 0, 0, 0 )
 shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/texture_albedo = ExtResource( 7 )
-shader_param/texture_normal = ExtResource( 8 )
+shader_param/texture_albedo = ExtResource( 8 )
+shader_param/texture_normal = ExtResource( 9 )
 _sections_unfolded = [ "shader_param" ]
 
 [sub_resource type="SpatialMaterial" id=20]
@@ -606,7 +607,7 @@ params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
 albedo_color = Color( 1, 1, 1, 1 )
-albedo_texture = ExtResource( 6 )
+albedo_texture = ExtResource( 7 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -692,7 +693,7 @@ shader_param/uv1_scale = Vector3( 1, 1, 1 )
 shader_param/uv1_offset = Vector3( 0, 0, 0 )
 shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/texture_albedo = ExtResource( 6 )
+shader_param/texture_albedo = ExtResource( 7 )
 _sections_unfolded = [ "Resource", "shader_param" ]
 
 [sub_resource type="Shader" id=23]
@@ -775,8 +776,8 @@ shader_param/uv1_scale = Vector3( 1, 1, 1 )
 shader_param/uv1_offset = Vector3( 0, 0, 0 )
 shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/texture_albedo = ExtResource( 8 )
-shader_param/texture_refraction = ExtResource( 8 )
+shader_param/texture_albedo = ExtResource( 9 )
+shader_param/texture_refraction = ExtResource( 9 )
 _sections_unfolded = [ "shader_param" ]
 
 [sub_resource type="Shader" id=25]
@@ -851,7 +852,7 @@ shader_param/uv1_scale = Vector3( 1, 1, 1 )
 shader_param/uv1_offset = Vector3( 0, 0, 0 )
 shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/texture_albedo = ExtResource( 6 )
+shader_param/texture_albedo = ExtResource( 7 )
 _sections_unfolded = [ "shader_param" ]
 
 [sub_resource type="Shader" id=27]
@@ -914,7 +915,7 @@ shader_param/uv1_scale = Vector3( 1, 1, 1 )
 shader_param/uv1_offset = Vector3( 0, 0, 0 )
 shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/texture_albedo = ExtResource( 6 )
+shader_param/texture_albedo = ExtResource( 7 )
 
 [node name="Main" type="Spatial" index="0"]
 
@@ -1095,7 +1096,33 @@ far = 200.0
 script = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Platform" type="MeshInstance" parent="." index="5"]
+[node name="FPSCounter" type="Label" parent="." index="5"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 16.0
+margin_top = 14.0
+margin_right = 227.0
+margin_bottom = 96.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0.349396, 0.417969, 1 )
+text = "FPS Unknown"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script = ExtResource( 6 )
+_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Mouse", "Rect", "Size Flags", "Theme", "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
+
+[node name="Platform" type="MeshInstance" parent="." index="6"]
 
 transform = Transform( 28.8, 0, 0, 0, 3, 0, 0, 0, 28.8, 119.317, 0, 38.958 )
 layers = 1
@@ -1129,7 +1156,7 @@ skeleton = NodePath("..")
 material/0 = ExtResource( 1 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="Scraps" type="Spatial" parent="." index="6"]
+[node name="Scraps" type="Spatial" parent="." index="7"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 6, 23 )
 visible = false

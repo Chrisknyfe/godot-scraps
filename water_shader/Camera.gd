@@ -14,7 +14,8 @@ func _enter_tree():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _ready():
-	OS.set_window_maximized(true)
+#	OS.set_window_maximized(true)
+	OS.set_window_fullscreen(true)
 
 func _input(event):
 	# Horizontal mouse look
@@ -40,6 +41,12 @@ func _input(event):
 		get_tree().reload_current_scene()
 	if Input.is_action_just_pressed("quit"):
 		get_tree().quit()
+		
+	if(Input.is_action_just_pressed("toggle_fullscreen")):
+		if(OS.window_fullscreen):
+			OS.set_window_fullscreen(false)
+		else:
+			OS.set_window_fullscreen(true)
 		
 
 func _physics_process(delta):
