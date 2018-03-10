@@ -357,6 +357,14 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Auto Exposure", "Background", "Fog", "SS Reflections" ]
 
+[sub_resource type="SphereMesh" id=27]
+
+radius = 20.0
+height = 40.0
+radial_segments = 64
+rings = 32
+is_hemisphere = false
+
 [sub_resource type="PlaneMesh" id=11]
 
 size = Vector2( 2, 2 )
@@ -900,14 +908,6 @@ shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
 shader_param/texture_albedo = ExtResource( 6 )
 
-[sub_resource type="SphereMesh" id=27]
-
-radius = 20.0
-height = 40.0
-radial_segments = 64
-rings = 32
-is_hemisphere = false
-
 [node name="Main" type="Spatial" index="0"]
 
 _sections_unfolded = [ "Transform" ]
@@ -1088,7 +1088,41 @@ far = 200.0
 script = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Scraps" type="Spatial" parent="." index="5"]
+[node name="Platform" type="MeshInstance" parent="." index="5"]
+
+transform = Transform( 28.8, 0, 0, 0, 3, 0, 0, 0, 28.8, 119.317, 0, 38.958 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 4 )
+skeleton = NodePath("..")
+material/0 = null
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="Water_Ball" type="MeshInstance" parent="Platform" index="0"]
+
+transform = Transform( 0.0347222, 0, 0, 0, 0.333333, 0, 0, 0, 0.0347222, 0, 10, 0 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 27 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="Scraps" type="Spatial" parent="." index="6"]
 
 editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 6, 23 )
@@ -1229,42 +1263,6 @@ lod_max_hysteresis = 0.0
 mesh = SubResource( 11 )
 skeleton = NodePath("..")
 material/0 = SubResource( 26 )
-_sections_unfolded = [ "Transform", "material" ]
-
-[node name="LucaStadium" type="Spatial" parent="." index="6"]
-
-[node name="Water_Ball" type="MeshInstance" parent="LucaStadium" index="0"]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 46.3169, 30, 160.958 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 27 )
-skeleton = NodePath("..")
-material/0 = ExtResource( 1 )
-_sections_unfolded = [ "Transform", "material" ]
-
-[node name="Platform" type="MeshInstance" parent="LucaStadium" index="1"]
-
-transform = Transform( 28.8, 0, 0, 0, 3, 0, 0, 0, 28.8, 46.3169, 0, 160.958 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
-skeleton = NodePath("..")
-material/0 = null
 _sections_unfolded = [ "Transform", "material" ]
 
 

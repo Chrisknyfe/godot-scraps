@@ -87,8 +87,8 @@ varying float	foam_alpha;
 /*
  * x & z: wave position
  * t: time
- * Steepness: physical height of the wave
- * Amplitude: also height, but affects the normal more.
+ * Steepness: physical height of the wave. Up and down particle motion.
+ * Amplitude: also height, but affects the normal more. Fore and aft particle motion.
  * Direction, Frequency, Speed: self explanatory
  */
 vec3 P(float x, float z, float t, float Steepness, float Amplitude, vec2 Direction, float Frequency, float Speed) {
@@ -110,6 +110,23 @@ vec3 N(float x, float z, float t, float Steepness, float Amplitude, vec2 Directi
 	result.z = (-1.0) * (Direction.y * Frequency * Amplitude * (cos((Frequency * twopi * dot(Direction, vec2(x, z))) + Speed * t)));
 	
 	return result;
+}
+
+// Rotate a vector from vec3(0,1,0) to the normal, rotation about the z and y axes.
+vec3 rotate_to_normal(vec3 point, vec3 normal)
+{
+	float theta = atan(normal.z, normal.x);
+	float phi = acos(normal.y);
+	float ct = cos(theta);
+	float st = sin(theta);
+	float cp = cos(phi);
+	float sp = sin(phi);
+	// column major. okay, deep breaths. I got this.
+//	mat3 rot = mat3( vec3(cp*ct, sp*ct,-st), vec3(-sp,cp,0), vec3(cp*st,sp*st,ct));
+	// huh. let's try row major instead. okay I guess that works?
+	mat3 rot = mat3( vec3(cp*ct, -sp, cp*st), vec3(sp*ct, cp, sp*st), vec3(-st, 0, ct));
+	vec3 newpoint = rot*point;
+	return newpoint;
 }
 
 void vertex() {
@@ -166,6 +183,8 @@ void vertex() {
 		vertexWaveFinal.x = vertexWaveFinal.x - wave_coords.x;
 		vertexWaveFinal.z = vertexWaveFinal.z - wave_coords.y; 
 		
+		vertexWaveFinal = rotate_to_normal(vertexWaveFinal, NORMAL);
+		
 		VERTEX += vertexWaveFinal;
 		
 	}
@@ -175,7 +194,9 @@ void vertex() {
 	vec3 normalWave3 = N(wave_coords.x, wave_coords.y, time, Steepness3, Amplitude3, Direction3, Frequency3, Speed3);
 	vec3 normalWave4 = N(wave_coords.x, wave_coords.y, time, Steepness3, Amplitude4, Direction4, Frequency4, Speed4);
 	vec3 normalWave5 = N(wave_coords.x, wave_coords.y, time, Steepness3, Amplitude5, Direction5, Frequency5, Speed5);
-	NORMAL = (normalWave1 + normalWave2 + normalWave3 + normalWave4 + normalWave5) / 5.0;
+	vec3 normalWaveFinal = (normalWave1 + normalWave2 + normalWave3 + normalWave4 + normalWave5) / 5.0;
+	vec3 rotNormal = rotate_to_normal(normalWaveFinal, NORMAL);
+	NORMAL = normalize(rotNormal);
 	
 }
 
@@ -243,7 +264,7 @@ render_priority = 0
 shader = SubResource( 1 )
 shader_param/albedo = Color( 1, 1, 1, 0.497255 )
 shader_param/albedo_wave_enabled = true
-shader_param/foam_enabled = true
+shader_param/foam_enabled = false
 shader_param/refraction_enabled = true
 shader_param/refraction = 0.1
 shader_param/refraction_texture_channel = Plane( 1, 0, 0, 0 )
@@ -253,7 +274,7 @@ shader_param/distance_fade_min = 200.0
 shader_param/distance_fade_max = 150.0
 shader_param/specular = 1.0
 shader_param/roughness = 0.05
-shader_param/use_world_xz = true
+shader_param/use_world_xz = false
 shader_param/UV_scale = Vector2( 50, 50 )
 shader_param/UV_offset = Vector2( 0, 0 )
 shader_param/vertex_waves_enabled = true
