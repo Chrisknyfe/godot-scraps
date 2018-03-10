@@ -131,9 +131,10 @@ void vertex() {
 	// Apply some wavey movement to the general UV coords
 	if (albedo_wave_enabled)
 	{
-		// TODO: get params for albedo wave from somewhere
-		vec3 uvwave = P(UV.x, UV.y, time, 0.8, 0.15, vec2(1, 0), 1, 1);
-		uvwave += P(UV.x, UV.y, time, 1, 0.07, vec2(0, 1), 1, 0.9);
+		// Throw in a bunch of constants to make these VERTEX waves look good in UV space
+		vec3 uvwave = P(UV.x, UV.y, time, Steepness2 * 0.1, Amplitude2 * 0.1, Direction2, Frequency2 * 15.0, Speed2 * 0.25);
+		uvwave += P(UV.x, UV.y, time, Steepness3 * 0.1, Amplitude3 * 0.1, Direction3, Frequency3 * 15.0, Speed3 * 0.25);
+		uvwave *- 0.5;
 		UV += uvwave.xz;
 		refraction_uv += uvwave.xz;
 	}
@@ -143,12 +144,11 @@ void vertex() {
 	
 	// Calcualte foam alpha here where it's cheaper
 	foam_alpha = 1.0;
-	
 	if (foam_enabled)
 	{
-		vec2 wavevec = UV ; // I don't know how to line up UV coords with vertex coords.
-		vec3 vertexWave1 = P(wavevec.x, wavevec.y, time, Steepness1, Amplitude1, Direction1, Frequency1 * 15.0, Speed1*0.25);
-		vec3 vertexWave4 = P(wavevec.x, wavevec.y, time, Steepness4, Amplitude4, Direction4, Frequency4 * 15.0, Speed4*0.25);
+		// Throw in a bunch of constants to make these VERTEX waves look good in UV space
+		vec3 vertexWave1 = P(UV.x, UV.y, time, Steepness1, Amplitude1, Direction1, Frequency1 * 15.0, Speed1 * 0.25);
+		vec3 vertexWave4 = P(UV.x, UV.y, time, Steepness4, Amplitude4, Direction4, Frequency4 * 15.0, Speed4 * 0.25);
 		vec3 vertexWave = ((vertexWave1 + vertexWave4) / 2.0) - 0.5;
 		foam_alpha = vertexWave.y;
 	}
