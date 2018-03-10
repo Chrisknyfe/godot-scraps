@@ -9,7 +9,7 @@
 [ext_resource path="res://ocean_albedo.png" type="Texture" id=7]
 [ext_resource path="res://generic_water.png" type="Texture" id=8]
 
-[sub_resource type="ArrayMesh" id=31]
+[sub_resource type="ArrayMesh" id=1]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -84,7 +84,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Distance Fade", "Flags", "Metallic", "Proximity Fade", "Roughness", "UV1" ]
 
-[sub_resource type="SphereMesh" id=7]
+[sub_resource type="SphereMesh" id=4]
 
 radius = 1.0
 height = 2.0
@@ -92,7 +92,7 @@ radial_segments = 64
 rings = 32
 is_hemisphere = false
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=5]
 
 render_priority = 0
 flags_transparent = false
@@ -144,14 +144,14 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Roughness" ]
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="CubeMesh" id=6]
 
 size = Vector3( 2, 2, 2 )
 subdivide_width = 0
 subdivide_height = 0
 subdivide_depth = 0
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="SpatialMaterial" id=7]
 
 render_priority = 0
 flags_transparent = false
@@ -203,7 +203,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=8]
 
 render_priority = 0
 flags_transparent = false
@@ -357,7 +357,7 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Auto Exposure", "Background", "Fog", "SS Reflections" ]
 
-[sub_resource type="SphereMesh" id=27]
+[sub_resource type="SphereMesh" id=11]
 
 radius = 20.0
 height = 40.0
@@ -365,7 +365,7 @@ radial_segments = 64
 rings = 32
 is_hemisphere = false
 
-[sub_resource type="SphereMesh" id=28]
+[sub_resource type="SphereMesh" id=12]
 
 radius = 2.0
 height = 4.0
@@ -373,7 +373,7 @@ radial_segments = 64
 rings = 32
 is_hemisphere = false
 
-[sub_resource type="Shader" id=29]
+[sub_resource type="Shader" id=13]
 
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx,world_vertex_coords;
@@ -432,10 +432,10 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id=30]
+[sub_resource type="ShaderMaterial" id=14]
 
 render_priority = 0
-shader = SubResource( 29 )
+shader = SubResource( 13 )
 shader_param/albedo = Color( 1, 1, 1, 1 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
@@ -451,14 +451,14 @@ shader_param/uv2_offset = Vector3( 0, 0, 0 )
 shader_param/texture_albedo = ExtResource( 4 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="PlaneMesh" id=11]
+[sub_resource type="PlaneMesh" id=15]
 
 size = Vector2( 2, 2 )
 subdivide_width = 0
 subdivide_depth = 0
 _sections_unfolded = [ "Resource" ]
 
-[sub_resource type="Shader" id=12]
+[sub_resource type="Shader" id=16]
 
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
@@ -500,10 +500,10 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id=13]
+[sub_resource type="ShaderMaterial" id=17]
 
 render_priority = 0
-shader = SubResource( 12 )
+shader = SubResource( 16 )
 shader_param/albedo = Color( 0.894531, 0.903595, 1, 1 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
@@ -519,7 +519,7 @@ shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
 shader_param/texture_albedo = ExtResource( 6 )
 
-[sub_resource type="Shader" id=16]
+[sub_resource type="Shader" id=18]
 
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
@@ -562,10 +562,10 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id=17]
+[sub_resource type="ShaderMaterial" id=19]
 
 render_priority = 0
-shader = SubResource( 16 )
+shader = SubResource( 18 )
 shader_param/albedo = Color( 0.354996, 0.630959, 0.644531, 1 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
@@ -582,7 +582,7 @@ shader_param/texture_albedo = ExtResource( 7 )
 shader_param/texture_normal = ExtResource( 8 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="SpatialMaterial" id=18]
+[sub_resource type="SpatialMaterial" id=20]
 
 render_priority = 0
 flags_transparent = false
@@ -637,7 +637,7 @@ distance_fade_min_distance = 20.0
 distance_fade_max_distance = 10.0
 _sections_unfolded = [ "Albedo", "Detail", "Distance Fade", "Flags", "Refraction" ]
 
-[sub_resource type="Shader" id=19]
+[sub_resource type="Shader" id=21]
 
 code = "shader_type spatial;
 // Oh I see here it is; cull_disabled is the render mode we want.
@@ -677,10 +677,10 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id=20]
+[sub_resource type="ShaderMaterial" id=22]
 
 render_priority = 0
-shader = SubResource( 19 )
+shader = SubResource( 21 )
 shader_param/albedo = Color( 1, 1, 1, 1 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
@@ -695,7 +695,7 @@ shader_param/uv2_offset = Vector3( 0, 0, 0 )
 shader_param/texture_albedo = ExtResource( 6 )
 _sections_unfolded = [ "Resource", "shader_param" ]
 
-[sub_resource type="Shader" id=21]
+[sub_resource type="Shader" id=23]
 
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
@@ -758,10 +758,10 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id=22]
+[sub_resource type="ShaderMaterial" id=24]
 
 render_priority = 0
-shader = SubResource( 21 )
+shader = SubResource( 23 )
 shader_param/albedo = Color( 1, 1, 1, 0.397804 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
@@ -779,7 +779,7 @@ shader_param/texture_albedo = ExtResource( 8 )
 shader_param/texture_refraction = ExtResource( 8 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="Shader" id=23]
+[sub_resource type="Shader" id=25]
 
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
@@ -834,10 +834,10 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id=24]
+[sub_resource type="ShaderMaterial" id=26]
 
 render_priority = 0
-shader = SubResource( 23 )
+shader = SubResource( 25 )
 shader_param/albedo = Color( 0.894531, 0.903595, 1, 1 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
@@ -854,7 +854,7 @@ shader_param/uv2_offset = Vector3( 0, 0, 0 )
 shader_param/texture_albedo = ExtResource( 6 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="Shader" id=25]
+[sub_resource type="Shader" id=27]
 
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
@@ -897,10 +897,10 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id=26]
+[sub_resource type="ShaderMaterial" id=28]
 
 render_priority = 0
-shader = SubResource( 25 )
+shader = SubResource( 27 )
 shader_param/albedo = Color( 1, 1, 1, 1 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
@@ -931,7 +931,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 31 )
+mesh = SubResource( 1 )
 skeleton = NodePath("..")
 material/0 = ExtResource( 1 )
 script = ExtResource( 2 )
@@ -972,9 +972,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 7 )
+mesh = SubResource( 4 )
 skeleton = NodePath("..")
-material/0 = SubResource( 8 )
+material/0 = SubResource( 5 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Shipyard" type="MeshInstance" parent="TurtleRock" index="0"]
@@ -989,7 +989,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
+mesh = SubResource( 6 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform", "material" ]
@@ -1006,9 +1006,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
+mesh = SubResource( 6 )
 skeleton = NodePath("..")
-material/0 = SubResource( 5 )
+material/0 = SubResource( 7 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Lighthouse2" type="MeshInstance" parent="TurtleRock" index="2"]
@@ -1023,9 +1023,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
+mesh = SubResource( 6 )
 skeleton = NodePath("..")
-material/0 = SubResource( 5 )
+material/0 = SubResource( 7 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Crate" type="MeshInstance" parent="TurtleRock" index="3"]
@@ -1040,9 +1040,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
+mesh = SubResource( 6 )
 skeleton = NodePath("..")
-material/0 = SubResource( 6 )
+material/0 = SubResource( 8 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="." index="2"]
@@ -1107,7 +1107,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
+mesh = SubResource( 6 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform", "material" ]
@@ -1124,7 +1124,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 27 )
+mesh = SubResource( 11 )
 skeleton = NodePath("..")
 material/0 = ExtResource( 1 )
 _sections_unfolded = [ "Transform", "material" ]
@@ -1147,9 +1147,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 28 )
+mesh = SubResource( 12 )
 skeleton = NodePath("..")
-material/0 = SubResource( 30 )
+material/0 = SubResource( 14 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="shader_boring" type="MeshInstance" parent="Scraps" index="1"]
@@ -1164,9 +1164,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 11 )
+mesh = SubResource( 15 )
 skeleton = NodePath("..")
-material/0 = SubResource( 13 )
+material/0 = SubResource( 17 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="shader_normal" type="MeshInstance" parent="Scraps" index="2"]
@@ -1181,9 +1181,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 11 )
+mesh = SubResource( 15 )
 skeleton = NodePath("..")
-material/0 = SubResource( 17 )
+material/0 = SubResource( 19 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="spatialtexplay" type="MeshInstance" parent="Scraps" index="3"]
@@ -1198,9 +1198,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 11 )
+mesh = SubResource( 15 )
 skeleton = NodePath("..")
-material/0 = SubResource( 18 )
+material/0 = SubResource( 20 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="shader_doublesided" type="MeshInstance" parent="Scraps" index="4"]
@@ -1215,9 +1215,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 11 )
+mesh = SubResource( 15 )
 skeleton = NodePath("..")
-material/0 = SubResource( 20 )
+material/0 = SubResource( 22 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="shader_refract" type="MeshInstance" parent="Scraps" index="5"]
@@ -1232,9 +1232,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 11 )
+mesh = SubResource( 15 )
 skeleton = NodePath("..")
-material/0 = SubResource( 22 )
+material/0 = SubResource( 24 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="shader_foamslide" type="MeshInstance" parent="Scraps" index="6"]
@@ -1249,9 +1249,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 11 )
+mesh = SubResource( 15 )
 skeleton = NodePath("..")
-material/0 = SubResource( 24 )
+material/0 = SubResource( 26 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="shader_distfade" type="MeshInstance" parent="Scraps" index="7"]
@@ -1266,9 +1266,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 11 )
+mesh = SubResource( 15 )
 skeleton = NodePath("..")
-material/0 = SubResource( 26 )
+material/0 = SubResource( 28 )
 _sections_unfolded = [ "Transform", "material" ]
 
 
