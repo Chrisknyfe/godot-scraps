@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://WaterShaderMaterial.tres" type="Material" id=1]
 [ext_resource path="res://MeshGen.gd" type="Script" id=2]
@@ -83,6 +83,66 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Distance Fade", "Flags", "Metallic", "Proximity Fade", "Roughness", "UV1" ]
+
+[sub_resource type="SphereMesh" id=7]
+
+radius = 1.0
+height = 2.0
+radial_segments = 64
+rings = 32
+is_hemisphere = false
+
+[sub_resource type="SpatialMaterial" id=8]
+
+render_priority = 0
+flags_transparent = false
+flags_unshaded = false
+flags_vertex_lighting = false
+flags_no_depth_test = false
+flags_use_point_size = false
+flags_world_triplanar = false
+flags_fixed_size = false
+flags_albedo_tex_force_srgb = false
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
+params_diffuse_mode = 0
+params_specular_mode = 0
+params_blend_mode = 0
+params_cull_mode = 0
+params_depth_draw_mode = 0
+params_line_width = 1.0
+params_point_size = 1.0
+params_billboard_mode = 0
+params_grow = false
+params_use_alpha_scissor = false
+albedo_color = Color( 0.0614624, 0.414063, 0.0669718, 1 )
+metallic = 0.0
+metallic_specular = 0.5
+metallic_texture_channel = 0
+roughness = 0.5
+roughness_texture_channel = 0
+emission_enabled = false
+normal_enabled = false
+rim_enabled = false
+clearcoat_enabled = false
+anisotropy_enabled = false
+ao_enabled = false
+depth_enabled = false
+subsurf_scatter_enabled = false
+transmission_enabled = false
+refraction_enabled = false
+detail_enabled = false
+uv1_scale = Vector3( 1, 1, 1 )
+uv1_offset = Vector3( 0, 0, 0 )
+uv1_triplanar = false
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 1, 1, 1 )
+uv2_offset = Vector3( 0, 0, 0 )
+uv2_triplanar = false
+uv2_triplanar_sharpness = 1.0
+proximity_fade_enable = false
+distance_fade_enable = false
+_sections_unfolded = [ "Albedo", "Roughness" ]
 
 [sub_resource type="CubeMesh" id=4]
 
@@ -195,66 +255,6 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Flags", "Parameters", "UV1", "Vertex Color" ]
-
-[sub_resource type="SphereMesh" id=7]
-
-radius = 1.0
-height = 2.0
-radial_segments = 64
-rings = 32
-is_hemisphere = false
-
-[sub_resource type="SpatialMaterial" id=8]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_grow = false
-params_use_alpha_scissor = false
-albedo_color = Color( 0.0614624, 0.414063, 0.0669718, 1 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 0.5
-roughness_texture_channel = 0
-emission_enabled = false
-normal_enabled = false
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "Roughness" ]
 
 [sub_resource type="ProceduralSky" id=9]
 
@@ -908,13 +908,6 @@ radial_segments = 64
 rings = 32
 is_hemisphere = false
 
-[sub_resource type="CubeMesh" id=28]
-
-size = Vector3( 20, 20, 20 )
-subdivide_width = 0
-subdivide_height = 0
-subdivide_depth = 0
-
 [node name="Main" type="Spatial" index="0"]
 
 _sections_unfolded = [ "Transform" ]
@@ -960,15 +953,26 @@ skeleton = NodePath("..")
 material/0 = SubResource( 3 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="TurtleRock" type="Spatial" parent="." index="1"]
+[node name="TurtleRock" type="MeshInstance" parent="." index="1"]
 
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26.3169, 0, 25.9577 )
-_sections_unfolded = [ "Transform" ]
+transform = Transform( 14.8, 0, 0, 0, 4.8, 0, 0, 0, 14.8, -7.1442, -1.66119, 24.7735 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 7 )
+skeleton = NodePath("..")
+material/0 = SubResource( 8 )
+_sections_unfolded = [ "Transform", "material" ]
 
 [node name="Shipyard" type="MeshInstance" parent="TurtleRock" index="0"]
 
-transform = Transform( 8, 0, 0, 0, 3, 0, 0, 0, 8, 1.90735e-06, 0, 1.90735e-06 )
+transform = Transform( 1.67568, 0, 0, 0, 0.625, 0, 0, 0, 0.540541, 2.12575, 0.346082, -0.392959 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -985,7 +989,7 @@ _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Lighthouse" type="MeshInstance" parent="TurtleRock" index="1"]
 
-transform = Transform( 1.2, 0, 0, 0, 3, 0, 0, 0, 1.2, 6, 6, -6 )
+transform = Transform( 0.0810811, 0, 0, 0, 0.625, 0, 0, 0, 0.0810811, 1.38251, 1.59608, -0.798365 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -1000,9 +1004,26 @@ skeleton = NodePath("..")
 material/0 = SubResource( 5 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="Crate" type="MeshInstance" parent="TurtleRock" index="2"]
+[node name="Lighthouse2" type="MeshInstance" parent="TurtleRock" index="2"]
 
-transform = Transform( 0.996195, 0.0858316, 0.0151344, -0.0871557, 0.98106, 0.172987, 0, -0.173648, 0.984808, -13, 3, -1 )
+transform = Transform( 0.0810812, 0, 0, 0, 0.625, 0, 0, 0, 0.0810812, 3.67981, 1.59608, -0.798365 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 4 )
+skeleton = NodePath("..")
+material/0 = SubResource( 5 )
+_sections_unfolded = [ "Transform", "material" ]
+
+[node name="Crate" type="MeshInstance" parent="TurtleRock" index="3"]
+
+transform = Transform( 0.0673105, 0.00579943, 0.00102259, -0.0181574, 0.204388, 0.036039, 0, -0.011733, 0.0665411, 0.098723, 0.971081, -0.460527 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -1015,23 +1036,6 @@ lod_max_hysteresis = 0.0
 mesh = SubResource( 4 )
 skeleton = NodePath("..")
 material/0 = SubResource( 6 )
-_sections_unfolded = [ "Transform", "material" ]
-
-[node name="GrassyClearing" type="MeshInstance" parent="TurtleRock" index="3"]
-
-transform = Transform( 14.8, 0, 0, 0, 4.8, 0, 0, 0, 14.8, -14.4611, -1.66119, 5.8158 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 7 )
-skeleton = NodePath("..")
-material/0 = SubResource( 8 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="." index="2"]
@@ -1068,7 +1072,7 @@ environment = SubResource( 10 )
 
 [node name="Camera" type="Camera" parent="." index="4"]
 
-transform = Transform( -0.870426, 0, -0.492299, 0, 1, 0, 0.492299, 0, -0.870426, 0, 2.76038, 0 )
+transform = Transform( -0.870426, 0, -0.492299, 0, 1, 0, 0.492299, 0, -0.870426, -5, 5.76038, -6 )
 keep_aspect = 1
 cull_mask = 1048575
 environment = null
@@ -1246,24 +1250,7 @@ skeleton = NodePath("..")
 material/0 = ExtResource( 1 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="InnerBox" type="MeshInstance" parent="LucaStadium" index="1"]
-
-transform = Transform( 0.707107, 0, 0.707107, -0.579228, 0.573576, 0.579228, -0.40558, -0.819152, 0.40558, 46.3169, 73, 160.958 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = SubResource( 28 )
-skeleton = NodePath("..")
-material/0 = ExtResource( 1 )
-_sections_unfolded = [ "Transform", "material" ]
-
-[node name="Platform" type="MeshInstance" parent="LucaStadium" index="2"]
+[node name="Platform" type="MeshInstance" parent="LucaStadium" index="1"]
 
 transform = Transform( 28.8, 0, 0, 0, 3, 0, 0, 0, 28.8, 46.3169, 0, 160.958 )
 layers = 1
