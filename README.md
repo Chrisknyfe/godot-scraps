@@ -5,8 +5,8 @@ Experimental projects for learning the Godot engine
 
 An ocean shader based on [MrMinimal's water shader](https://gitlab.com/MrMinimal/GodotWater)
 
-![Giphy](https://media.giphy.com/media/1hMdHBoCA2mBVJ5Ekr/giphy.gif)
-![Giphy](https://media.giphy.com/media/ZvTiwj7DQTnigEoe9s/giphy.gif)
+[![Giphy](https://media.giphy.com/media/1hMdHBoCA2mBVJ5Ekr/giphy.gif)](https://media.giphy.com/media/1hMdHBoCA2mBVJ5Ekr/giphy.gif)
+[![Giphy](https://media.giphy.com/media/ZvTiwj7DQTnigEoe9s/giphy.gif)](https://media.giphy.com/media/ZvTiwj7DQTnigEoe9s/giphy.gif)
 
 A video explanation of an early version of the shader:
 
