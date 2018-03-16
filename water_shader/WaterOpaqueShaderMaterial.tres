@@ -1,0 +1,53 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=2]
+
+[ext_resource path="res://WaterOpaqueShaderMaterial.shader" type="Shader" id=1]
+[ext_resource path="res://ice_albedo.png" type="Texture" id=2]
+[ext_resource path="res://foam_alpha.png" type="Texture" id=3]
+
+[resource]
+
+render_priority = 0
+shader = ExtResource( 1 )
+shader_param/albedo = Color( 0.425781, 0.838501, 1, 0.33702 )
+shader_param/albedo_wave_enabled = true
+shader_param/foam_enabled = true
+shader_param/specular = 1.0
+shader_param/roughness = 0.1
+shader_param/metallic = 1.0
+shader_param/world_triplanar = true
+shader_param/uv_blend_sharpness = 2.0
+shader_param/uv_tri_scale = Vector3( 36, 36, 36 )
+shader_param/uv_tri_offset = Vector3( 0, 0, 0 )
+shader_param/vertex_waves_enabled = true
+shader_param/vertex_displace_from_mesh_normal = null
+shader_param/normal_displace_from_mesh_normal = true
+shader_param/debug_time_invariant = false
+shader_param/Steepness1 = 4.0
+shader_param/Amplitude1 = 1.0
+shader_param/Direction1 = Vector2( 1, 0 )
+shader_param/Frequency1 = 0.02
+shader_param/Speed1 = 1.0
+shader_param/Steepness2 = 0.9
+shader_param/Amplitude2 = 0.7
+shader_param/Direction2 = Vector2( 0.710611, -0.703585 )
+shader_param/Frequency2 = 0.06
+shader_param/Speed2 = 3.0
+shader_param/Steepness3 = 0.8
+shader_param/Amplitude3 = 0.5
+shader_param/Direction3 = Vector2( -0.053753, 0.998554 )
+shader_param/Frequency3 = 0.04
+shader_param/Speed3 = 1.5
+shader_param/Steepness4 = 2.0
+shader_param/Amplitude4 = 1.0
+shader_param/Direction4 = Vector2( -0.899166, 0.437607 )
+shader_param/Frequency4 = 0.06
+shader_param/Speed4 = 1.6
+shader_param/Steepness5 = 1.0
+shader_param/Amplitude5 = 0.4
+shader_param/Direction5 = Vector2( -0.680626, -0.732631 )
+shader_param/Frequency5 = 0.05
+shader_param/Speed5 = 1.0
+shader_param/texture_albedo = ExtResource( 2 )
+shader_param/texture_foam = ExtResource( 3 )
+_sections_unfolded = [ "shader_param" ]
+

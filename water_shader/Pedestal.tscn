@@ -184,7 +184,11 @@ skeleton = NodePath("..")
 material/0 = SubResource( 3 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="ReflectionProbe" type="ReflectionProbe" parent="." index="6"]
+[node name="probes" type="Spatial" parent="." index="6"]
+
+visible = false
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="probes" index="0"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 17, 0 )
 layers = 1
@@ -202,7 +206,7 @@ interior_ambient_energy = 1.0
 interior_ambient_contrib = 0.0
 _sections_unfolded = [ "Transform" ]
 
-[node name="ReflectionProbe2" type="ReflectionProbe" parent="." index="7"]
+[node name="ReflectionProbe2" type="ReflectionProbe" parent="probes" index="1"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17, 45 )
 layers = 1
@@ -220,7 +224,7 @@ interior_ambient_energy = 1.0
 interior_ambient_contrib = 0.0
 _sections_unfolded = [ "Transform" ]
 
-[node name="ReflectionProbe3" type="ReflectionProbe" parent="." index="8"]
+[node name="ReflectionProbe3" type="ReflectionProbe" parent="probes" index="2"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17, -45 )
 layers = 1
@@ -238,7 +242,7 @@ interior_ambient_energy = 1.0
 interior_ambient_contrib = 0.0
 _sections_unfolded = [ "Transform" ]
 
-[node name="ReflectionProbe4" type="ReflectionProbe" parent="." index="9"]
+[node name="ReflectionProbe4" type="ReflectionProbe" parent="probes" index="3"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 17, 0 )
 layers = 1

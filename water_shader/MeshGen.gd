@@ -9,16 +9,29 @@ export(bool)		var follow_camera = true
 #export(float)		var follow_accel = 0.5
 export(bool)		var refresh_editor_mesh = false
 
+# list of materials
+var current_material = 0
+var materials = ["res://WaterShaderMaterial.tres", "res://WaterOpaqueShaderMaterial.tres", "res://IceShaderMaterial.tres", "ObsidianShaderMaterial.tres"]
+
 func quadratic_increase(x):
 	var y = quadraticFactor*x*x + (1.0-quadraticFactor)*abs(x)
 	if x < 0:
 		y = -y
 	return y
 	
+func _input(event):
+	
+	if event.is_action_pressed("change_ocean"):
+		current_material = (current_material + 1) % materials.size()
+		var mat = load(materials[current_material])
+		set_surface_material(0, mat)
+		#build_mesh()
 
 # Due to the "tool" keyword at the top of this file
 # this function already executes in the editor
 func _ready():
+	var mat = load(materials[current_material])
+	set_surface_material(0, mat)
 	build_mesh()
 	
 func build_mesh():
