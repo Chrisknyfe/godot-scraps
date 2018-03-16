@@ -46,7 +46,7 @@ func _input(event):
 
 	# Toggle HUD
 	if event.is_action_pressed("toggle_hud"):
-		$"../FPSCounter".visible = !$"../FPSCounter".visible
+		$"../HUD".visible = !$"../HUD".visible
 
 	# Toggle mouse capture
 	if event.is_action_pressed("toggle_mouse_capture"):
