@@ -1,8 +1,9 @@
-[gd_resource type="ShaderMaterial" load_steps=5 format=2]
+[gd_resource type="ShaderMaterial" load_steps=6 format=2]
 
 [ext_resource path="res://ocean_albedo.png" type="Texture" id=1]
 [ext_resource path="res://foam_alpha.png" type="Texture" id=2]
 [ext_resource path="res://generic_water.png" type="Texture" id=3]
+[ext_resource path="res://shore.png" type="Texture" id=4]
 
 [sub_resource type="Shader" id=1]
 
@@ -20,6 +21,10 @@ uniform bool albedo_wave_enabled;
 
 uniform bool foam_enabled;
 uniform sampler2D texture_foam: hint_albedo;
+
+
+uniform bool shore_enabled;
+uniform sampler2D texture_shore: hint_albedo;
 
 uniform bool refraction_enabled;
 uniform sampler2D texture_refraction;
@@ -243,6 +248,21 @@ vec4 triplanar_texture(sampler2D p_sampler,vec3 p_weights,vec3 p_triplanar_pos) 
 	samp+= texture(p_sampler,p_triplanar_pos.zy * vec2(-1.0,1.0)) * p_weights.x;
 	return samp;
 }
+uniform float near = 0.1;
+uniform float far = 400.0;
+
+float linearize(float val) {
+    val = 2.0 * val - 1.0;
+    val = 2.0 * near * far / (far + near - val * (far - near));
+    return val;
+}
+
+float triangle_wave(float input, float t, float crests)
+{
+	input = clamp(input, 0.0, 1.0);
+	return fract((input - t) * crests)*input;
+}
+
 
 void fragment() {
 	float rtot = 0.7071067811865476; // root two over two
@@ -306,13 +326,48 @@ void fragment() {
 	if (foam_enabled)
 	{
 		vec4 foam_tex;
+		
 		if (world_triplanar)
 		{
-			foam_tex = triplanar_texture(texture_foam, uv_power_normal, uv_tri)  * clamp(foam_alpha, 0.0, 1.0);
+			foam_tex = triplanar_texture(texture_foam, uv_power_normal, uv_tri);
+			foam_tex.a *= clamp(foam_alpha, 0.0, 1.0);
 		}
 		else
 		{
-			foam_tex = texture(texture_foam, UV) * clamp(foam_alpha, 0.0, 1.0);
+			foam_tex = texture(texture_foam, UV);
+			foam_tex.a *= clamp(foam_alpha, 0.0, 1.0);
+		}
+		EMISSION *= (1.0-foam_tex.a); // block emission
+		ALBEDO = ALBEDO*(1.0-foam_tex.a) + foam_tex.rgb*foam_tex.a; // overwrite albedo
+	}
+	
+	if (shore_enabled)
+	{
+		vec4 foam_tex;
+		float shore_alpha;
+		// doh ho ho... increase foam alpha close to other objects!
+		
+	    float zdepth = linearize(texture(DEPTH_TEXTURE, SCREEN_UV).r);
+	    float zpos = linearize(FRAGCOORD.z);
+	    float diff = zdepth - zpos;
+		//if (diff < 1.0)
+		{
+			shore_alpha = 1.0 - diff / 20.0;
+		}
+		shore_alpha = 2.0 * triangle_wave(shore_alpha, time/3.5, 1.5);
+		
+		
+//		final_foam_alpha = diff;
+		
+		if (world_triplanar)
+		{
+			foam_tex = triplanar_texture(texture_shore, uv_power_normal, uv_tri);
+			foam_tex.a *= clamp(shore_alpha, 0.0, 1.0);
+		}
+		else
+		{
+			foam_tex = texture(texture_shore, UV);
+			foam_tex.a *= clamp(shore_alpha, 0.0, 1.0);
 		}
 		EMISSION *= (1.0-foam_tex.a); // block emission
 		ALBEDO = ALBEDO*(1.0-foam_tex.a) + foam_tex.rgb*foam_tex.a; // overwrite albedo
@@ -334,6 +389,7 @@ shader = SubResource( 1 )
 shader_param/albedo = Color( 1, 1, 1, 0.33702 )
 shader_param/albedo_wave_enabled = true
 shader_param/foam_enabled = true
+shader_param/shore_enabled = true
 shader_param/refraction_enabled = true
 shader_param/refraction = 0.1
 shader_param/refraction_texture_channel = Plane( 1, 0, 0, 0 )
@@ -377,8 +433,11 @@ shader_param/Amplitude5 = 0.4
 shader_param/Direction5 = Vector2( -0.680626, -0.732631 )
 shader_param/Frequency5 = 0.05
 shader_param/Speed5 = 1.0
+shader_param/near = null
+shader_param/far = null
 shader_param/texture_albedo = ExtResource( 1 )
 shader_param/texture_foam = ExtResource( 2 )
+shader_param/texture_shore = ExtResource( 4 )
 shader_param/texture_refraction = ExtResource( 3 )
 _sections_unfolded = [ "shader_param" ]
 
