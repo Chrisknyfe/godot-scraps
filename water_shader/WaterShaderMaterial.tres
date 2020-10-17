@@ -6,7 +6,6 @@
 [ext_resource path="res://shore.png" type="Texture" id=4]
 
 [sub_resource type="Shader" id=1]
-
 resource_name = "water_shader"
 code = "// Shader to simulate an open ocean based on Gerstner waves
 // Reference: https://developer.nvidia.com/gpugems/GPUGems/gpugems_ch01.html
@@ -380,11 +379,8 @@ void fragment() {
 		ALPHA*=clamp(smoothstep(distance_fade_min,distance_fade_max,-VERTEX.z),0.0,1.0);
 	}
 }"
-_sections_unfolded = [ "Resource" ]
 
 [resource]
-
-render_priority = 0
 shader = SubResource( 1 )
 shader_param/albedo = Color( 1, 1, 1, 0.33702 )
 shader_param/albedo_wave_enabled = true
@@ -433,11 +429,9 @@ shader_param/Amplitude5 = 0.4
 shader_param/Direction5 = Vector2( -0.680626, -0.732631 )
 shader_param/Frequency5 = 0.05
 shader_param/Speed5 = 1.0
-shader_param/near = null
-shader_param/far = null
+shader_param/near = 0.1
+shader_param/far = 400.0
 shader_param/texture_albedo = ExtResource( 1 )
 shader_param/texture_foam = ExtResource( 2 )
 shader_param/texture_shore = ExtResource( 4 )
 shader_param/texture_refraction = ExtResource( 3 )
-_sections_unfolded = [ "shader_param" ]
-
