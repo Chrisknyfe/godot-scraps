@@ -77,8 +77,7 @@ func _process(delta):
 		translation.z = -limit_distance
 		collide_common(delta)
 
-
-func _on_AimlessCube_input_event( camera, event, click_position, click_normal, shape_idx ):
+func _on_AimlessCube_input_event(camera, event, click_position, click_normal, shape_idx):
 	if lose:
 		return
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
