@@ -6,6 +6,8 @@ enum SIDEAXIS {POS_X, NEG_X, POS_Y, NEG_Y, POS_Z, NEG_Z}
 
 enum BLOCKTYPE {AIR, WOOD}
 
+export var material : Material
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -65,7 +67,7 @@ func add_face(st, side: int, offset: Vector3):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	var cull_backfaces = true
+	var cull_backfaces: bool = true
 	
 	var blocks = {
 		Vector3(0,0,0): 1,
@@ -78,7 +80,7 @@ func _ready():
 	
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
+	st.set_material(material)
 	#var offset = Vector3(0,0,0)
 	
 	
@@ -110,7 +112,6 @@ func _ready():
 	st.generate_tangents()
 	
 	$IslandMesh.mesh = st.commit()
-	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

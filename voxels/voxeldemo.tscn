@@ -1,8 +1,13 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Island.gd" type="Script" id=1]
 [ext_resource path="res://Camera.gd" type="Script" id=2]
 [ext_resource path="res://BlockDb.gd" type="Script" id=3]
+[ext_resource path="res://wood.png" type="Texture" id=4]
+
+[sub_resource type="SpatialMaterial" id=8]
+albedo_texture = ExtResource( 4 )
+uv1_triplanar = true
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -28,6 +33,7 @@ material = SubResource( 6 )
 
 [node name="Island" type="Spatial" parent="."]
 script = ExtResource( 1 )
+material = SubResource( 8 )
 
 [node name="IslandMesh" type="MeshInstance" parent="Island"]
 mesh = SubResource( 1 )
