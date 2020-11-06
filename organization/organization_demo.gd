@@ -23,3 +23,5 @@ func makebox():
 func _process(delta):
 	if Input.is_action_just_pressed("makebox"):
 		makebox()
+		# Get something from the global autoload singleton
+		print("Global.foo:", Global.foo)

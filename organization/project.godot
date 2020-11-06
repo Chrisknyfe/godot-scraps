@@ -30,6 +30,10 @@ config/name="organization"
 run/main_scene="res://organization_demo.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Global="*res://Global.gd"
+
 [input]
 
 makebox={
