@@ -1,8 +1,8 @@
-extends Spatial
+extends Area
+
+class_name Island
 
 enum SIDE {LEFT, RIGHT, TOP, BOTTOM, FRONT, BACK}
-
-enum SIDEAXIS {POS_X, NEG_X, POS_Y, NEG_Y, POS_Z, NEG_Z}
 
 enum BLOCKTYPE {AIR, WOOD}
 
@@ -12,7 +12,7 @@ export var material : Material
 # var a = 2
 # var b = "text"
 
-func add_face(st, side: int, offset: Vector3):
+func _add_mesh_face(st, side: int, offset: Vector3):
 	var vertslut = {
 		SIDE.LEFT: [
 			Vector3(0.5, -0.5, -0.5),
@@ -64,11 +64,64 @@ func add_face(st, side: int, offset: Vector3):
 	st.add_vertex(verts[3] + offset)
 	st.add_vertex(verts[2] + offset)
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
+func _make_viewmodel(cull_backfaces: bool = true):
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	st.set_material(material)
+	#var offset = Vector3(0,0,0)
 	
-	var cull_backfaces: bool = true
+	for coord in $BlockDb.blocks:
+		if $BlockDb.isBlockSolid(coord):
+			if cull_backfaces:
+				if !$BlockDb.isBlockSolid(coord + Vector3(1, 0, 0)):
+					_add_mesh_face(st, SIDE.LEFT, coord)
+				if !$BlockDb.isBlockSolid(coord + Vector3(-1, 0, 0)):
+					_add_mesh_face(st, SIDE.RIGHT, coord)
+				if !$BlockDb.isBlockSolid(coord + Vector3(0, 1, 0)):
+					_add_mesh_face(st, SIDE.TOP, coord)
+				if !$BlockDb.isBlockSolid(coord + Vector3(0, -1, 0)):
+					_add_mesh_face(st, SIDE.BOTTOM, coord)
+				if !$BlockDb.isBlockSolid(coord + Vector3(0, 0, 1)):
+					_add_mesh_face(st, SIDE.FRONT, coord)
+				if !$BlockDb.isBlockSolid(coord + Vector3(0, 0, -1)):
+					_add_mesh_face(st, SIDE.BACK, coord)
+			else:
+				_add_mesh_face(st, SIDE.LEFT, coord)
+				_add_mesh_face(st, SIDE.RIGHT, coord)
+				_add_mesh_face(st, SIDE.TOP, coord)
+				_add_mesh_face(st, SIDE.BOTTOM, coord)
+				_add_mesh_face(st, SIDE.FRONT, coord)
+				_add_mesh_face(st, SIDE.BACK, coord)
 	
+	st.generate_normals()
+	st.generate_tangents()
+	
+	$IslandMesh.mesh = st.commit()
+	
+func _add_phys_block(coord):
+	var collider = CollisionShape.new()
+	collider.shape = BoxShape.new()
+	collider.shape.extents = Vector3.ONE / 2
+	collider.transform.origin = coord
+	add_child(collider)
+	
+func _make_physmodel():
+	if $BlockDb.size() == 0:
+		print("empty island")
+		_add_phys_block(Vector3.ZERO)
+	for coord in $BlockDb.blocks:
+		if $BlockDb.isBlockSolid(coord):
+			print(coord, ":", $BlockDb.getBlock(coord))
+			_add_phys_block(coord)
+		
+func _clear_phymodel():
+	for c in get_children():
+		if c is CollisionShape:
+			remove_child(c)
+			c.queue_free()
+	
+	
+func _generate_blocks():
 	var blocks = {
 		Vector3(0,0,0): BLOCKTYPE.WOOD,
 		Vector3(1,0,0): BLOCKTYPE.WOOD,
@@ -78,42 +131,32 @@ func _ready():
 	}
 	$BlockDb.blocks = blocks
 	
-	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	st.set_material(material)
-	#var offset = Vector3(0,0,0)
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	_generate_blocks()
+	_make_viewmodel()
+	_clear_phymodel()
+	_make_physmodel()
+	print("LEFT: ", Vector3.LEFT)
+	print("RIGHT: ", Vector3.RIGHT)
+	print("UP: ", Vector3.UP)
+	print("DOWN: ", Vector3.DOWN)
+	print("FORWARD: ", Vector3.FORWARD)
+	print("BACK: ", Vector3.BACK)
 	
-	
-	for coord in $BlockDb.blocks:
-		print(coord, ":", $BlockDb.getBlock(coord))
-		var offset = coord
-		if cull_backfaces:
-			if !$BlockDb.isBlockSolid(coord + Vector3(1, 0, 0)):
-				add_face(st, SIDE.LEFT, offset)
-			if !$BlockDb.isBlockSolid(coord + Vector3(-1, 0, 0)):
-				add_face(st, SIDE.RIGHT, offset)
-			if !$BlockDb.isBlockSolid(coord + Vector3(0, 1, 0)):
-				add_face(st, SIDE.TOP, offset)
-			if !$BlockDb.isBlockSolid(coord + Vector3(0, -1, 0)):
-				add_face(st, SIDE.BOTTOM, offset)
-			if !$BlockDb.isBlockSolid(coord + Vector3(0, 0, 1)):
-				add_face(st, SIDE.FRONT, offset)
-			if !$BlockDb.isBlockSolid(coord + Vector3(0, 0, -1)):
-				add_face(st, SIDE.BACK, offset)
-		else:
-			add_face(st, SIDE.LEFT, offset)
-			add_face(st, SIDE.RIGHT, offset)
-			add_face(st, SIDE.TOP, offset)
-			add_face(st, SIDE.BOTTOM, offset)
-			add_face(st, SIDE.FRONT, offset)
-			add_face(st, SIDE.BACK, offset)
-	
-	st.generate_normals()
-	st.generate_tangents()
-	
-	$IslandMesh.mesh = st.commit()
+func get_block_position_at(global_coord):
+	return (global_coord - self.translation).round()
 
+func set_block(coord, blocktype):
+	$BlockDb.setBlock(coord, blocktype)
+	_make_viewmodel()
+	_clear_phymodel()
+	_make_physmodel()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_Island_input_event(camera, event, click_position, click_normal, shape_idx):
+	pass # Replace with function body.

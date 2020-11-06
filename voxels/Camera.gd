@@ -5,9 +5,13 @@ extends Camera
 
 const MOVE_SPEED = 2
 const MOUSE_SENSITIVITY = 0.002
+
 onready var speed = 1
 onready var velocity = Vector3()
 onready var initial_rotation = PI/2
+
+onready var raycast = $RayCast
+onready var hitmarker_scene = preload("res://HitMarker.tscn")
 
 var rot_target = Vector3(0,0,0)
 
@@ -43,7 +47,6 @@ func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		rot_target.x = clamp(rot_target.x - event.relative.y*MOUSE_SENSITIVITY, deg2rad(-90), deg2rad(90))
 		
-
 	# Toggle HUD
 	if event.is_action_pressed("toggle_hud"):
 		$"../HUD".visible = !$"../HUD".visible
@@ -55,13 +58,13 @@ func _input(event):
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 			
-	if Input.is_action_just_pressed("reset"):
+	if event.is_action_pressed("reset"):
 		get_tree().reload_current_scene()
-	if Input.is_action_just_pressed("quit"):
+	if event.is_action_pressed("quit"):
 		get_tree().quit()
 		
-	if(Input.is_action_just_pressed("toggle_fullscreen")):
-		if(OS.window_fullscreen):
+	if event.is_action_pressed("toggle_fullscreen"):
+		if OS.window_fullscreen:
 			OS.set_window_fullscreen(false)
 		else:
 			OS.set_window_fullscreen(true)
@@ -105,6 +108,39 @@ func _physics_process(delta):
 	.rotated(Vector3(0, 1, 0), rotation.y - initial_rotation) \
 	.rotated(Vector3(1, 0, 0), cos(rotation.y)*rotation.x) \
 	.rotated(Vector3(0, 0, 1), -sin(rotation.y)*rotation.x)
+	
+func mark(coord, color):
+	var marker = hitmarker_scene.instance()
+	marker.translate(coord)
+	marker.set_color(color)
+	var root = get_tree().get_root()  
+	root.add_child(marker)
+	
+func _process(delta):
+	# Block breaking/placing.
+	var breaking = Input.is_action_just_pressed("break")
+	var placing = Input.is_action_just_pressed("place")
+	# Either both buttons were pressed or neither are, so stop.
+	if breaking or placing:
+		var collider = raycast.get_collider()
+		var position = raycast.get_collision_point()
+		var normal = raycast.get_collision_normal()
+		if collider and (collider is Island):
+			var island: Island = collider
+			var nudge = normal / 2
+			if breaking:
+				nudge = -nudge
+			var global_pos = (position + nudge).round()
+			mark(position, Color.red)
+			print("Breaking or placing at ", global_pos)
+			mark(global_pos, Color.green)
+			var island_pos = island.get_block_position_at(global_pos)
+			print("island block pos: ", island_pos)
+			
+			if breaking:
+				island.set_block(island_pos, 0)
+			if placing:
+				island.set_block(island_pos, 1)
 
 func _exit_tree():
 	# Restore the mouse cursor upon quitting

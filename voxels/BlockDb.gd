@@ -14,6 +14,9 @@ func getBlock(coord: Vector3):
 	else:
 		return 0
 		
+func isBlockVisible(coord: Vector3):
+	return isBlockSolid(coord)
+		
 func isBlockSolid(coord: Vector3):
 	if coord in blocks:
 		if blocks[coord] != 0:
@@ -23,12 +26,10 @@ func isBlockSolid(coord: Vector3):
 func setBlocks(newblocks):
 	for coord in newblocks:
 		blocks[coord] = newblocks[coord]
+		
+func setBlock(coord, blocktype):
+	blocks[coord] = blocktype
+		
+func size():
+	return blocks.size()
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
