@@ -70,11 +70,11 @@ func _ready():
 	var cull_backfaces: bool = true
 	
 	var blocks = {
-		Vector3(0,0,0): 1,
-		Vector3(1,0,0): 1,
-		Vector3(0,1,0): 1,
-		Vector3(0,0,1): 1,
-		Vector3(1,1,1): 1,
+		Vector3(0,0,0): BLOCKTYPE.WOOD,
+		Vector3(1,0,0): BLOCKTYPE.WOOD,
+		Vector3(0,1,0): BLOCKTYPE.WOOD,
+		Vector3(0,0,1): BLOCKTYPE.WOOD,
+		Vector3(1,1,1): BLOCKTYPE.WOOD,
 	}
 	$BlockDb.blocks = blocks
 	

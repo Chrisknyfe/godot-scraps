@@ -5,38 +5,38 @@
 [ext_resource path="res://BlockDb.gd" type="Script" id=3]
 [ext_resource path="res://wood.png" type="Texture" id=4]
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 4 )
 uv1_triplanar = true
 
-[sub_resource type="CubeMesh" id=1]
+[sub_resource type="CubeMesh" id=2]
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 1, 0, 0, 1 )
 
-[sub_resource type="CubeMesh" id=3]
-material = SubResource( 2 )
+[sub_resource type="CubeMesh" id=4]
+material = SubResource( 3 )
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0, 1, 0, 1 )
 
-[sub_resource type="CubeMesh" id=5]
-material = SubResource( 4 )
+[sub_resource type="CubeMesh" id=6]
+material = SubResource( 5 )
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=7]
 albedo_color = Color( 0, 0, 1, 1 )
 
-[sub_resource type="CubeMesh" id=7]
-material = SubResource( 6 )
+[sub_resource type="CubeMesh" id=8]
+material = SubResource( 7 )
 
 [node name="Spatial" type="Spatial"]
 
 [node name="Island" type="Spatial" parent="."]
 script = ExtResource( 1 )
-material = SubResource( 8 )
+material = SubResource( 1 )
 
 [node name="IslandMesh" type="MeshInstance" parent="Island"]
-mesh = SubResource( 1 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="BlockDb" type="Node" parent="Island"]
@@ -53,15 +53,15 @@ transform = Transform( 0.707107, 0.353553, -0.612372, 0, 0.866025, 0.5, 0.707107
 
 [node name="x" type="MeshInstance" parent="Axes"]
 transform = Transform( 1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1.5, 0, 0 )
-mesh = SubResource( 3 )
+mesh = SubResource( 4 )
 material/0 = null
 
 [node name="y" type="MeshInstance" parent="Axes"]
 transform = Transform( 0.1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 1.5, 0 )
-mesh = SubResource( 5 )
+mesh = SubResource( 6 )
 material/0 = null
 
 [node name="z" type="MeshInstance" parent="Axes"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 1.5 )
-mesh = SubResource( 7 )
+mesh = SubResource( 8 )
 material/0 = null
