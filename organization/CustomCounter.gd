@@ -11,3 +11,6 @@ func increment():
 	
 func get_count():
 	return self.count
+
+func reset():
+	self.count = 0
