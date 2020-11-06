@@ -117,14 +117,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -81.0
+margin_left = -100.0
 margin_top = -56.0
-margin_right = 93.0
+margin_right = 106.0
 margin_bottom = -8.0
 custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-text = "You Lose."
+text = "Game Over"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TryAgainButton" type="Button" parent="LoseMenu"]
 margin_left = -71.0
