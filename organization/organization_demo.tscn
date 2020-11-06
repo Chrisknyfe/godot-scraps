@@ -1,13 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://abox.tscn" type="PackedScene" id=1]
 [ext_resource path="res://organization_demo.gd" type="Script" id=2]
-
-[sub_resource type="ProceduralSky" id=5]
-
-[sub_resource type="Environment" id=4]
-background_mode = 2
-background_sky = SubResource( 5 )
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 2 )
@@ -20,6 +14,3 @@ transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 4.83071,
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.628791, 0.201513, -0.751009, 0, 0.965835, 0.259156, 0.777574, -0.162955, 0.607309, -9, 0, 3 )
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 4 )

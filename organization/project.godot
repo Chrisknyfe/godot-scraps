@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "CustomCounter",
 "language": "GDScript",
 "path": "res://counter.gd"
+}, {
+"base": "CustomCounter",
+"class": "DoubleCounter",
+"language": "GDScript",
+"path": "res://DoubleCounter.gd"
 } ]
 _global_script_class_icons={
-"CustomCounter": ""
+"CustomCounter": "",
+"DoubleCounter": ""
 }
 
 [application]
