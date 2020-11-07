@@ -1,0 +1,182 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://3D_Skybox_Viewport.gd" type="Script" id=1]
+[ext_resource path="res://3D_Skybox_Scene.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 4, 20, 4 )
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_transparent = true
+albedo_color = Color( 1, 0, 0, 0.501961 )
+
+[sub_resource type="SphereMesh" id=3]
+radius = 6.0
+height = 12.0
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0, 0.447059, 0.921569, 1 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "MainScene_Animation"
+length = 14.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4, 7.5, 10.5, 12, 14 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -30.9564, 11.389, 11.9705 ), Vector3( 11.1661, 8.56929, 27.7656 ), Vector3( -9.27596, 25.4914, -0.313372 ), Vector3( 21.654, 12.0827, -23.4041 ), Vector3( -0.893299, 22.0107, -8.24358 ), Vector3( -30.9564, 11.389, 11.9705 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 4, 7.5, 10.5, 14 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -15.8478, -67.4481, 0 ), Vector3( -12.2478, 15.3519, 0 ), Vector3( -61.0478, -88.6481, 0 ), Vector3( -18.6771, 132.073, 0 ), Vector3( -15.8478, -67.4481, 0 ) ]
+}
+
+[sub_resource type="Shader" id=6]
+code = "shader_type canvas_item;
+
+uniform sampler2D viewport_texture : hint_black;
+
+void fragment()
+{
+	vec4 screen_fragment = texture(SCREEN_TEXTURE, SCREEN_UV);
+	vec4 viewport_fragment = texture(viewport_texture, SCREEN_UV);
+	
+	vec3 final_color = mix(viewport_fragment.rgb, screen_fragment.rgb, screen_fragment.a);
+	
+	COLOR.rgb = final_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
+
+[sub_resource type="Gradient" id=8]
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
+width = 128
+
+[sub_resource type="CubeMesh" id=10]
+
+[sub_resource type="SpatialMaterial" id=11]
+albedo_color = Color( 1, 0.937255, 0, 1 )
+
+[node name="MainScene" type="Spatial"]
+
+[node name="Example_Object" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="Example_Object"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="Example_Object"]
+transform = Transform( 1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, -7, 4 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="MeshInstance5" type="MeshInstance" parent="Example_Object"]
+transform = Transform( 1, 0, 0, 0, -0.707107, -0.707107, 0, 0.707107, -0.707107, 0, 6, 4 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="Example_Object"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.7062, -7 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="MeshInstance6" type="MeshInstance" parent="Example_Object"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.293796, 11 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="Example_Object"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.2938, -7 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.38352, 0.252201, -0.888429, 0, 0.96199, 0.273083, 0.923533, -0.104733, 0.368943, -30.9564, 11.389, 11.9705 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "MainScene_Animation"
+anims/MainScene_Animation = SubResource( 5 )
+
+[node name="3D_Skybox_Viewport" type="Viewport" parent="."]
+own_world = true
+render_target_update_mode = 3
+script = ExtResource( 1 )
+path_to_viewport_viewer = NodePath("../UI/3D_Skybox_Viewer")
+
+[node name="3D_Skybox_Scene" parent="3D_Skybox_Viewport" instance=ExtResource( 2 )]
+target_camera_path = NodePath("../../Camera")
+skybox_scale = 16.0
+
+[node name="UI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="3D_Skybox_Viewer" type="TextureRect" parent="UI"]
+material = SubResource( 7 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( 9 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="UI"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -124.5
+margin_top = -54.0
+margin_right = 4.5
+margin_bottom = -40.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_as_outline = 1
+text = "3D Skybox example!"
+
+[node name="Label2" type="Label" parent="UI"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -153.0
+margin_top = -24.0
+margin_right = 153.0
+margin_bottom = -10.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_y = 1
+custom_constants/shadow_as_outline = 1
+text = "The background is a completely different scene!"
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.1763, -0.95212, 0.249772, 0, 0.253747, 0.967271, -0.984336, -0.17053, 0.0447356, 29.1145, 15.6361, 0 )
+shadow_enabled = true
+
+[node name="BananaForScale" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20 )
+mesh = SubResource( 10 )
+material/0 = SubResource( 11 )
