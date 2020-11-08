@@ -114,7 +114,8 @@ func _add_phys_block(center, extents=Vector3.ONE/2):
 	collider.transform.origin = center
 	add_child(collider)
 	
-func _get_optimal_phys_shapes():# dict of all physical blocks, to be consumed
+func _get_optimal_phys_shapes():
+	# dict of all physical blocks, to be consumed
 	var physblocks = {}
 	for coord in $BlockDb.blocks:
 		if $BlockDb.isBlockSolid(coord):
@@ -144,6 +145,83 @@ func _get_optimal_phys_shapes():# dict of all physical blocks, to be consumed
 					physblocks.erase(next)
 				else:
 					break
+			
+			# expand positive y
+			while true:
+				var next = span[1] + Vector3.UP
+				
+				var can_expand = true
+				for x in range(span[0].x, next.x + 1):
+					var cur = Vector3(x, next.y, next.z)
+					if not cur in physblocks:
+						can_expand = false
+				
+				if can_expand:
+					span[1] = next
+					for x in range(span[0].x, next.x + 1):
+						var cur = Vector3(x, next.y, next.z)
+						physblocks.erase(cur)
+				else:
+					break
+					
+			# expand negative y
+			while true:
+				var next = span[0] + Vector3.DOWN
+				
+				var can_expand = true
+				for x in range(next.x, span[1].x + 1):
+					var cur = Vector3(x, next.y, next.z)
+					if not cur in physblocks:
+						can_expand = false
+				
+				if can_expand:
+					span[0] = next
+					for x in range(next.x, span[1].x + 1):
+						var cur = Vector3(x, next.y, next.z)
+						physblocks.erase(cur)
+				else:
+					break
+					
+			# expand positive z
+			while true:
+				var next = span[1] + Vector3.BACK
+				
+				var can_expand = true
+				for x in range(span[0].x, next.x + 1):
+					for y in range(span[0].y, next.y + 1):
+						var cur = Vector3(x, y, next.z)
+						if not cur in physblocks:
+							can_expand = false
+				
+				if can_expand:
+					span[1] = next
+					for x in range(span[0].x, next.x + 1):
+						for y in range(span[0].y, next.y + 1):
+							var cur = Vector3(x, y, next.z)
+							physblocks.erase(cur)
+				else:
+					break
+			
+			# expand positive z
+			while true:
+				var next = span[0] + Vector3.FORWARD
+				
+				var can_expand = true
+				for x in range(next.x, span[1].x + 1):
+					for y in range(next.y, span[1].y + 1):
+						var cur = Vector3(x, y, next.z)
+						if not cur in physblocks:
+							can_expand = false
+				
+				if can_expand:
+					span[0] = next
+					for x in range(next.x, span[1].x + 1):
+						for y in range(next.y, span[1].y + 1):
+							var cur = Vector3(x, y, next.z)
+							physblocks.erase(cur)
+				else:
+					break
+					
 			# shape: [0]: center [1]: extents
 			var shape = [(span[1] + span[0]) / 2, (Vector3.ONE + span[1] - span[0]) / 2]
 			shapes.append(shape)
@@ -176,14 +254,11 @@ func _clear_phymodel():
 func _generate_blocks():
 	var blocks = {
 		Vector3(0,0,0): BLOCKTYPE.WOOD,
-		Vector3(1,0,0): BLOCKTYPE.WOOD,
-		Vector3(0,1,0): BLOCKTYPE.WOOD,
-		Vector3(0,0,1): BLOCKTYPE.WOOD,
-		Vector3(1,1,1): BLOCKTYPE.WOOD,
 	}
-	for x in range(0,8):
-		for y in range(0,8):
-			for z in range(0,8):
+	var radius = 8
+	for x in range(-radius,radius):
+		for y in range(-radius,radius):
+			for z in range(-radius,radius):
 				blocks[Vector3(x,y,z)] = BLOCKTYPE.WOOD
 	
 	$BlockDb.blocks = blocks
