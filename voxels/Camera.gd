@@ -109,12 +109,15 @@ func _physics_process(delta):
 	.rotated(Vector3(1, 0, 0), cos(rotation.y)*rotation.x) \
 	.rotated(Vector3(0, 0, 1), -sin(rotation.y)*rotation.x)
 	
-func mark(coord, color):
+func mark(coord, color, parent=null):
 	var marker = hitmarker_scene.instance()
 	marker.translate(coord)
 	marker.set_color(color)
-	var root = get_tree().get_root()  
-	root.add_child(marker)
+	if not parent:
+		var root = get_tree().get_root()  
+		root.add_child(marker)
+	else:
+		parent.add_child(marker)
 	
 func _process(delta):
 	# Block breaking/placing.
@@ -127,14 +130,15 @@ func _process(delta):
 		var normal = raycast.get_collision_normal()
 		if collider and (collider is Island):
 			var island: Island = collider
-			var nudge = normal / 2
+			var nudge = normal * 0.01
 			if breaking:
 				nudge = -nudge
-			var global_pos = (position + nudge).round()
+			var global_pos = (position + nudge)
 			mark(position, Color.red)
 			print("Breaking or placing at ", global_pos)
 			mark(global_pos, Color.green)
 			var island_pos = island.get_block_position_at(global_pos)
+			mark(island_pos, Color.blue, island)
 			print("island block pos: ", island_pos)
 			
 			if breaking:

@@ -288,17 +288,20 @@ func _ready():
 	print("BACK: ", Vector3.BACK)
 	
 func get_block_position_at(global_coord):
-	return (global_coord - self.translation).round()
+	return (self.to_local(global_coord)).round()
 
 func set_block(coord, blocktype):
 	$BlockDb.setBlock(coord, blocktype)
 	_make_viewmodel_threaded()
 	_clear_phymodel()
 	_make_physmodel()
+	
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	self.rotate(Vector3.RIGHT, 0.05*delta)
+	self.translate(Vector3.RIGHT * 0.25 * delta)
 
 
 func _on_Island_input_event(camera, event, click_position, click_normal, shape_idx):

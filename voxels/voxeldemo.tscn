@@ -28,6 +28,9 @@ material = SubResource( 5 )
 
 [node name="Island" parent="." instance=ExtResource( 1 )]
 
+[node name="Island2" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -30.644, 9.53674e-07, -46.5505 )
+
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 7 )
 script = ExtResource( 2 )
