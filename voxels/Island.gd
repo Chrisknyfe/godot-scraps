@@ -114,27 +114,54 @@ func _add_phys_block(center, extents=Vector3.ONE/2):
 	collider.transform.origin = center
 	add_child(collider)
 	
-func _make_physmodel():
-	var start_time = OS.get_ticks_msec()
+func _get_optimal_phys_shapes():# dict of all physical blocks, to be consumed
 	var physblocks = {}
-	if $BlockDb.size() == 0:
-		print("empty island")
-		physblocks[Vector3.ZERO] = 1
 	for coord in $BlockDb.blocks:
 		if $BlockDb.isBlockSolid(coord):
-			# only place block if it's an exterior block
-			if  !$BlockDb.isBlockSolid(coord + Vector3(1, 0, 0)) or \
-				!$BlockDb.isBlockSolid(coord + Vector3(-1, 0, 0)) or \
-				!$BlockDb.isBlockSolid(coord + Vector3(0, 1, 0)) or \
-				!$BlockDb.isBlockSolid(coord + Vector3(0, -1, 0)) or \
-				!$BlockDb.isBlockSolid(coord + Vector3(0, 0, 1)) or \
-				!$BlockDb.isBlockSolid(coord + Vector3(0, 0, -1)):
-				physblocks[coord] = 1
-				
-	var algo_time = OS.get_ticks_msec() - start_time
-	print("algo took ", algo_time, " ms")
-	for coord in physblocks:
-		_add_phys_block(coord)
+			physblocks[coord] = 1
+	# list of all physical blocks, to be iterated over
+	var physlist = physblocks.keys()
+	
+	# final list of spans, to be converted to collision shapes
+	var shapes = []
+	for coord in physlist:
+		if coord in physblocks:
+			var span = [coord, coord]
+			physblocks.erase(coord)
+			# expand positive x
+			while true:
+				var next = span[1] + Vector3.RIGHT
+				if next in physblocks:
+					span[1] = next
+					physblocks.erase(next)
+				else:
+					break
+			# expand negative x
+			while true:
+				var next = span[0] + Vector3.LEFT
+				if next in physblocks:
+					span[0] = next
+					physblocks.erase(next)
+				else:
+					break
+			# shape: [0]: center [1]: extents
+			var shape = [(span[1] + span[0]) / 2, (Vector3.ONE + span[1] - span[0]) / 2]
+			shapes.append(shape)
+	return shapes
+	
+func _make_physmodel():
+	var start_time = OS.get_ticks_msec()
+	if $BlockDb.size() == 0:
+		print("empty island")
+		_add_phys_block(Vector3.ZERO)
+	else:
+		var shapes = _get_optimal_phys_shapes()
+					
+		var algo_time = OS.get_ticks_msec() - start_time
+		print("algo took ", algo_time, " ms")
+		
+		for shape in shapes:
+			_add_phys_block(shape[0], shape[1])
 		
 	var elapsed_time = OS.get_ticks_msec() - start_time
 	print("_make_physmodel took ", elapsed_time, " ms for ", $BlockDb.size(), " blocks")
