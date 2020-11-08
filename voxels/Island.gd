@@ -99,7 +99,18 @@ func _make_viewmodel(dummy_arg):
 	st.generate_normals()
 	st.generate_tangents()
 	
-	$IslandMesh.mesh = st.commit()
+	var mesh = st.commit()
+	var mi = MeshInstance.new()
+	mi.name = "IslandMesh"
+	mi.mesh = mesh
+	
+	var oldnode = $IslandMesh
+	remove_child(oldnode)
+	oldnode.queue_free()
+	
+	add_child(mi)
+	
+	
 	var elapsed_time = OS.get_ticks_msec() - start_time
 	print("_make_viewmodel took ", elapsed_time, " ms for ", $BlockDb.size(), " blocks")
 	
