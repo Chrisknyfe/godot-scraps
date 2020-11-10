@@ -123,7 +123,7 @@ func _process(delta):
 	# Block breaking/placing.
 	var breaking = Input.is_action_just_pressed("break")
 	var placing = Input.is_action_just_pressed("place")
-	# Either both buttons were pressed or neither are, so stop.
+	
 	if breaking or placing:
 		var collider = raycast.get_collider()
 		var position = raycast.get_collision_point()
@@ -134,17 +134,29 @@ func _process(delta):
 			if breaking:
 				nudge = -nudge
 			var global_pos = (position + nudge)
-			mark(position, Color.red)
-			print("Breaking or placing at ", global_pos)
-			mark(global_pos, Color.green)
+			#mark(position, Color.red)
+			#print("Breaking or placing at ", global_pos)
+			#mark(global_pos, Color.green)
 			var island_pos = island.get_block_position_at(global_pos)
-			mark(island_pos, Color.blue, island)
-			print("island block pos: ", island_pos)
+			#mark(island_pos, Color.blue, island)
+			#print("island block pos: ", island_pos)
 			
 			if breaking:
 				island.set_block(island_pos, 0)
 			if placing:
 				island.set_block(island_pos, 1)
+	
+	if Input.is_action_just_pressed("move_island"):
+		var collider = raycast.get_collider()
+		var position = raycast.get_collision_point()
+		var normal = raycast.get_collision_normal()
+		if collider and (collider is Island):
+			var island: Island = collider
+			var dest = self.translation.round()
+			mark(dest, Color.cyan)
+			print("Moving island to ", dest)
+			island.move_to(dest)
+
 
 func _exit_tree():
 	# Restore the mouse cursor upon quitting

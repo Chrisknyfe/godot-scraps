@@ -1,4 +1,4 @@
-extends Area
+extends KinematicBody
 
 class_name Island
 
@@ -9,11 +9,12 @@ enum BLOCKTYPE {AIR, WOOD}
 export var material : Material
 export var cull_backfaces : bool = true
 
-var _thread
+var _threads = []
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var target_point : Vector3 = Vector3.ZERO
+var target_rot : Vector3 = Vector3.ZERO
+var speed_slide : int = 10
+var speed_rot : int = 1
 
 func _add_mesh_face(st, side: int, offset: Vector3):
 	var vertslut = {
@@ -115,8 +116,9 @@ func _make_viewmodel(dummy_arg):
 	print("_make_viewmodel took ", elapsed_time, " ms for ", $BlockDb.size(), " blocks")
 	
 func _make_viewmodel_threaded():
-	_thread = Thread.new()
-	_thread.start(self, "_make_viewmodel")
+	var thread = Thread.new()
+	thread.start(self, "_make_viewmodel")
+	_threads.append(thread)
 	
 func _add_phys_block(center, extents=Vector3.ONE/2):
 	var collider = CollisionShape.new()
@@ -254,19 +256,18 @@ func _make_physmodel():
 		
 	var elapsed_time = OS.get_ticks_msec() - start_time
 	print("_make_physmodel took ", elapsed_time, " ms for ", $BlockDb.size(), " blocks")
-		
+
 func _clear_phymodel():
 	for c in get_children():
 		if c is CollisionShape:
 			remove_child(c)
 			c.queue_free()
-	
-	
+
 func _generate_blocks():
 	var blocks = {
 		Vector3(0,0,0): BLOCKTYPE.WOOD,
 	}
-	var radius = 8
+	var radius = 3
 	for x in range(-radius,radius):
 		for y in range(-radius,radius):
 			for z in range(-radius,radius):
@@ -287,6 +288,9 @@ func _ready():
 	print("FORWARD: ", Vector3.FORWARD)
 	print("BACK: ", Vector3.BACK)
 	
+	target_point = self.translation
+	target_rot = self.rotation
+	
 func get_block_position_at(global_coord):
 	return (self.to_local(global_coord)).round()
 
@@ -295,14 +299,26 @@ func set_block(coord, blocktype):
 	_make_viewmodel_threaded()
 	_clear_phymodel()
 	_make_physmodel()
-	
-	
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	self.rotate(Vector3.RIGHT, 0.05*delta)
-	self.translate(Vector3.RIGHT * 0.25 * delta)
+
+func move_to(coord):
+	target_point = coord.round()
+
+func _physics_process(delta):
+	var curpos = self.translation
+	var currot = self.rotation
+	var delta_pos = target_point - curpos
+	var delta_length = delta_pos.length()
+	var delta_normal = delta_pos.normalized()
+	if delta_length > 0.125:
+		var move_by = delta_normal * speed_slide
+		print("move by: ", move_by, " delta_normal: ", delta_normal)
+		move_and_slide(move_by)
+	elif delta_length > 0:
+		print("Just snap to ", target_point)
+		self.translation = target_point
 
 
 func _on_Island_input_event(camera, event, click_position, click_normal, shape_idx):
 	pass # Replace with function body.
+
