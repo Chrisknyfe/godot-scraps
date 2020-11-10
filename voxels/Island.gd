@@ -311,7 +311,8 @@ func _physics_process(delta):
 	var delta_length = delta_pos.length()
 	var delta_normal = delta_pos.normalized()
 	if delta_length > 0.125:
-		var move_by = delta_normal * speed_slide
+		var speed = min(speed_slide, delta_length)
+		var move_by = delta_normal * speed
 		print("move by: ", move_by, " delta_normal: ", delta_normal)
 		move_and_slide(move_by)
 	elif delta_length > 0:
