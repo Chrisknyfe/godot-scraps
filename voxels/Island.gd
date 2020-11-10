@@ -13,7 +13,8 @@ var _threads = []
 
 var target_point : Vector3 = Vector3.ZERO
 var target_rot : Vector3 = Vector3.ZERO
-var speed_slide : int = 10
+var speed_slide_max = 10.0
+var speed_slide_min = 1.0
 var speed_rot : int = 1
 
 func _add_mesh_face(st, side: int, offset: Vector3):
@@ -311,7 +312,7 @@ func _physics_process(delta):
 	var delta_length = delta_pos.length()
 	var delta_normal = delta_pos.normalized()
 	if delta_length > 0.125:
-		var speed = min(speed_slide, delta_length)
+		var speed = max(min(speed_slide_max, delta_length), speed_slide_min)
 		var move_by = delta_normal * speed
 		print("move by: ", move_by, " delta_normal: ", delta_normal)
 		move_and_slide(move_by)
