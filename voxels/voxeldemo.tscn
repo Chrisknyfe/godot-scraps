@@ -1,28 +1,22 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Island.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Camera.gd" type="Script" id=2]
 [ext_resource path="res://HitMarker.tscn" type="PackedScene" id=3]
 [ext_resource path="res://FPSCounter.gd" type="Script" id=4]
 [ext_resource path="res://Help.gd" type="Script" id=5]
+[ext_resource path="res://dev.png" type="Texture" id=6]
+[ext_resource path="res://Axes.tscn" type="PackedScene" id=7]
 
 [sub_resource type="SpatialMaterial" id=1]
-albedo_color = Color( 1, 0, 0, 1 )
+albedo_texture = ExtResource( 6 )
 
-[sub_resource type="CubeMesh" id=2]
-material = SubResource( 1 )
+[sub_resource type="ProceduralSky" id=2]
+sun_longitude = 15.0
 
-[sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 0, 1, 0, 1 )
-
-[sub_resource type="CubeMesh" id=4]
-material = SubResource( 3 )
-
-[sub_resource type="SpatialMaterial" id=5]
-albedo_color = Color( 0, 0, 1, 1 )
-
-[sub_resource type="CubeMesh" id=6]
-material = SubResource( 5 )
+[sub_resource type="Environment" id=3]
+background_mode = 2
+background_sky = SubResource( 2 )
 
 [node name="Spatial" type="Spatial"]
 
@@ -30,6 +24,7 @@ material = SubResource( 5 )
 
 [node name="Island2" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20.644, 9.53674e-07, -10.5505 )
+material = SubResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 7 )
@@ -42,24 +37,10 @@ cast_to = Vector3( 0, -60, 0 )
 collide_with_areas = true
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 0.707107, 0.353553, -0.612372, 0, 0.866025, 0.5, 0.707107, -0.353553, 0.612372, -8.88348, 9.06918, 0 )
+transform = Transform( -0.965926, -0.148452, 0.212012, 0, 0.819152, 0.573577, -0.258819, 0.554033, -0.79124, -8.88348, 9.06918, 0 )
+shadow_enabled = true
 
-[node name="Axes" type="Spatial" parent="."]
-
-[node name="x" type="MeshInstance" parent="Axes"]
-transform = Transform( 1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1.5, 0, 0 )
-mesh = SubResource( 2 )
-material/0 = null
-
-[node name="y" type="MeshInstance" parent="Axes"]
-transform = Transform( 0.1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 1.5, 0 )
-mesh = SubResource( 4 )
-material/0 = null
-
-[node name="z" type="MeshInstance" parent="Axes"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 1.5 )
-mesh = SubResource( 6 )
-material/0 = null
+[node name="Axes" parent="." instance=ExtResource( 7 )]
 
 [node name="HitMarker" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.09926, -2.38419e-07, 1.92205 )
@@ -95,3 +76,6 @@ script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 3 )

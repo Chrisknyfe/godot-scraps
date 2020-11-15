@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=2]
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="CubeMesh" id=3]
+material = SubResource( 2 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0, 1, 0, 1 )
+
+[sub_resource type="CubeMesh" id=5]
+material = SubResource( 4 )
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0, 0, 1, 1 )
+
+[sub_resource type="CubeMesh" id=7]
+material = SubResource( 6 )
+
+[node name="Axes" type="Spatial"]
+
+[node name="x" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1.5, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="y" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 1.5, 0 )
+mesh = SubResource( 5 )
+material/0 = null
+
+[node name="z" type="MeshInstance" parent="."]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 1.5 )
+mesh = SubResource( 7 )
+material/0 = null

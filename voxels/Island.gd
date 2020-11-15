@@ -2,7 +2,7 @@ extends KinematicBody
 
 class_name Island
 
-enum SIDE {LEFT, RIGHT, TOP, BOTTOM, FRONT, BACK}
+enum SIDE {LEFT, RIGHT, UP, DOWN, FORWARD, BACK}
 
 enum BLOCKTYPE {AIR, WOOD}
 
@@ -18,38 +18,84 @@ var speed_slide_min = 1.0
 var speed_rot : int = 1
 
 func _add_mesh_face(st, side: int, offset: Vector3):
-	var vertslut = {
-		SIDE.LEFT: [
-			Vector3(0.5, -0.5, -0.5),
-			Vector3(0.5, -0.5, 0.5),
-			Vector3(0.5, 0.5, -0.5),
-			Vector3(0.5, 0.5, 0.5),
-		],
+	var normlut = {
+		SIDE.RIGHT: Vector3.RIGHT,
+		SIDE.LEFT: Vector3.LEFT,
+		SIDE.UP: Vector3.UP,
+		SIDE.DOWN: Vector3.DOWN,
+		SIDE.BACK: Vector3.BACK,
+		SIDE.FORWARD: Vector3.FORWARD,
+	}
+	var uvlut = {
 		SIDE.RIGHT: [
-			Vector3(-0.5, -0.5, 0.5),
-			Vector3(-0.5, -0.5, -0.5),
-			Vector3(-0.5, 0.5, 0.5),
-			Vector3(-0.5, 0.5, -0.5),
+			Vector2(1.0, 1.0),
+			Vector2(0.0, 1.0),
+			Vector2(1.0, 0.0),
+			Vector2(0.0, 0.0),
 		],
-		SIDE.TOP: [
-			Vector3(-0.5, 0.5, 0.5),
-			Vector3(-0.5, 0.5, -0.5),
-			Vector3(0.5, 0.5, 0.5),
-			Vector3(0.5, 0.5, -0.5),
+		SIDE.LEFT: [
+			Vector2(1.0, 1.0),
+			Vector2(0.0, 1.0),
+			Vector2(1.0, 0.0),
+			Vector2(0.0, 0.0),
 		],
-		SIDE.BOTTOM: [
-			Vector3(-0.5, -0.5, -0.5),
-			Vector3(-0.5, -0.5, 0.5),
-			Vector3(0.5, -0.5, -0.5),
-			Vector3(0.5, -0.5, 0.5),
+		SIDE.UP: [
+			Vector2(0.0, 1.0),
+			Vector2(0.0, 0.0),
+			Vector2(1.0, 1.0),
+			Vector2(1.0, 0.0),
 		],
-		SIDE.FRONT: [
-			Vector3(0.5, 0.5, 0.5),
-			Vector3(0.5, -0.5, 0.5),
-			Vector3(-0.5, 0.5, 0.5),
-			Vector3(-0.5, -0.5, 0.5),
+		SIDE.DOWN: [
+			Vector2(1.0, 0.0),
+			Vector2(1.0, 1.0),
+			Vector2(0.0, 0.0),
+			Vector2(0.0, 1.0),
 		],
 		SIDE.BACK: [
+			Vector2(1.0, 0.0),
+			Vector2(1.0, 1.0),
+			Vector2(0.0, 0.0),
+			Vector2(0.0, 1.0),
+		],
+		SIDE.FORWARD: [
+			Vector2(0.0, 1.0),
+			Vector2(0.0, 0.0),
+			Vector2(1.0, 1.0),
+			Vector2(1.0, 0.0),
+		],
+	}
+	var vertslut = {
+		SIDE.RIGHT: [
+			Vector3(0.5, -0.5, -0.5),
+			Vector3(0.5, -0.5, 0.5),
+			Vector3(0.5, 0.5, -0.5),
+			Vector3(0.5, 0.5, 0.5),
+		],
+		SIDE.LEFT: [
+			Vector3(-0.5, -0.5, 0.5),
+			Vector3(-0.5, -0.5, -0.5),
+			Vector3(-0.5, 0.5, 0.5),
+			Vector3(-0.5, 0.5, -0.5),
+		],
+		SIDE.UP: [
+			Vector3(-0.5, 0.5, 0.5),
+			Vector3(-0.5, 0.5, -0.5),
+			Vector3(0.5, 0.5, 0.5),
+			Vector3(0.5, 0.5, -0.5),
+		],
+		SIDE.DOWN: [
+			Vector3(-0.5, -0.5, -0.5),
+			Vector3(-0.5, -0.5, 0.5),
+			Vector3(0.5, -0.5, -0.5),
+			Vector3(0.5, -0.5, 0.5),
+		],
+		SIDE.BACK: [
+			Vector3(0.5, 0.5, 0.5),
+			Vector3(0.5, -0.5, 0.5),
+			Vector3(-0.5, 0.5, 0.5),
+			Vector3(-0.5, -0.5, 0.5),
+		],
+		SIDE.FORWARD: [
 			Vector3(0.5, -0.5, -0.5),
 			Vector3(0.5, 0.5, -0.5),
 			Vector3(-0.5, -0.5, -0.5),
@@ -58,13 +104,21 @@ func _add_mesh_face(st, side: int, offset: Vector3):
 	}
 	
 	var verts = vertslut[side]
+	var uvs = uvlut[side]
+	var norm = normlut[side]
 	
+	st.add_uv(uvs[0])
 	st.add_vertex(verts[0] + offset)
+	st.add_uv(uvs[1])
 	st.add_vertex(verts[1] + offset)
+	st.add_uv(uvs[2])
 	st.add_vertex(verts[2] + offset)
 	
+	st.add_uv(uvs[1])
 	st.add_vertex(verts[1] + offset)
+	st.add_uv(uvs[3])
 	st.add_vertex(verts[3] + offset)
+	st.add_uv(uvs[2])
 	st.add_vertex(verts[2] + offset)
 
 func _make_viewmodel(dummy_arg):
@@ -78,24 +132,24 @@ func _make_viewmodel(dummy_arg):
 	for coord in $BlockDb.blocks:
 		if $BlockDb.isBlockSolid(coord):
 			if self.cull_backfaces:
-				if !$BlockDb.isBlockSolid(coord + Vector3(1, 0, 0)):
+				if !$BlockDb.isBlockSolid(coord + Vector3.LEFT):
 					_add_mesh_face(st, SIDE.LEFT, coord)
-				if !$BlockDb.isBlockSolid(coord + Vector3(-1, 0, 0)):
+				if !$BlockDb.isBlockSolid(coord + Vector3.RIGHT):
 					_add_mesh_face(st, SIDE.RIGHT, coord)
-				if !$BlockDb.isBlockSolid(coord + Vector3(0, 1, 0)):
-					_add_mesh_face(st, SIDE.TOP, coord)
-				if !$BlockDb.isBlockSolid(coord + Vector3(0, -1, 0)):
-					_add_mesh_face(st, SIDE.BOTTOM, coord)
-				if !$BlockDb.isBlockSolid(coord + Vector3(0, 0, 1)):
-					_add_mesh_face(st, SIDE.FRONT, coord)
-				if !$BlockDb.isBlockSolid(coord + Vector3(0, 0, -1)):
+				if !$BlockDb.isBlockSolid(coord + Vector3.UP):
+					_add_mesh_face(st, SIDE.UP, coord)
+				if !$BlockDb.isBlockSolid(coord + Vector3.DOWN):
+					_add_mesh_face(st, SIDE.DOWN, coord)
+				if !$BlockDb.isBlockSolid(coord + Vector3.FORWARD):
+					_add_mesh_face(st, SIDE.FORWARD, coord)
+				if !$BlockDb.isBlockSolid(coord + Vector3.BACK):
 					_add_mesh_face(st, SIDE.BACK, coord)
 			else:
 				_add_mesh_face(st, SIDE.LEFT, coord)
 				_add_mesh_face(st, SIDE.RIGHT, coord)
-				_add_mesh_face(st, SIDE.TOP, coord)
-				_add_mesh_face(st, SIDE.BOTTOM, coord)
-				_add_mesh_face(st, SIDE.FRONT, coord)
+				_add_mesh_face(st, SIDE.UP, coord)
+				_add_mesh_face(st, SIDE.DOWN, coord)
+				_add_mesh_face(st, SIDE.FORWARD, coord)
 				_add_mesh_face(st, SIDE.BACK, coord)
 	
 	st.generate_normals()
@@ -269,9 +323,9 @@ func _generate_blocks():
 		Vector3(0,0,0): BLOCKTYPE.WOOD,
 	}
 	var radius = 3
-	for x in range(-radius,radius):
-		for y in range(-radius,radius):
-			for z in range(-radius,radius):
+	for x in range(-radius,radius+1):
+		for y in range(-radius,radius+1):
+			for z in range(-radius,radius+1):
 				blocks[Vector3(x,y,z)] = BLOCKTYPE.WOOD
 	
 	$BlockDb.blocks = blocks

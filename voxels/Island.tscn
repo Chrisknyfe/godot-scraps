@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Island.gd" type="Script" id=1]
 [ext_resource path="res://BlockDb.gd" type="Script" id=2]
 [ext_resource path="res://wood.png" type="Texture" id=3]
+[ext_resource path="res://Axes.tscn" type="PackedScene" id=4]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 3 )
@@ -27,4 +28,6 @@ script = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 3 )
+
+[node name="Axes" parent="." instance=ExtResource( 4 )]
 [connection signal="input_event" from="." to="." method="_on_Island_input_event"]
