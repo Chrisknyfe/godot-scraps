@@ -4,8 +4,6 @@ class_name Island
 
 enum SIDE {LEFT, RIGHT, UP, DOWN, FORWARD, BACK}
 
-enum BLOCKTYPE {AIR, WOOD}
-
 export var material : Material
 export var cull_backfaces : bool = true
 
@@ -17,7 +15,7 @@ var speed_slide_max = 10.0
 var speed_slide_min = 1.0
 var speed_rot : int = 1
 
-func _add_mesh_face(st, side: int, offset: Vector3):
+func _add_mesh_face(st, side: int, offset: Vector3, uv: Rect2):
 	var normlut = {
 		SIDE.RIGHT: Vector3.RIGHT,
 		SIDE.LEFT: Vector3.LEFT,
@@ -107,18 +105,18 @@ func _add_mesh_face(st, side: int, offset: Vector3):
 	var uvs = uvlut[side]
 	var norm = normlut[side]
 	
-	st.add_uv(uvs[0])
+	st.add_uv((uvs[0] * uv.size) + uv.position)
 	st.add_vertex(verts[0] + offset)
-	st.add_uv(uvs[1])
+	st.add_uv((uvs[1] * uv.size) + uv.position)
 	st.add_vertex(verts[1] + offset)
-	st.add_uv(uvs[2])
+	st.add_uv((uvs[2] * uv.size) + uv.position)
 	st.add_vertex(verts[2] + offset)
 	
-	st.add_uv(uvs[1])
+	st.add_uv((uvs[1] * uv.size) + uv.position)
 	st.add_vertex(verts[1] + offset)
-	st.add_uv(uvs[3])
+	st.add_uv((uvs[3] * uv.size) + uv.position)
 	st.add_vertex(verts[3] + offset)
-	st.add_uv(uvs[2])
+	st.add_uv((uvs[2] * uv.size) + uv.position)
 	st.add_vertex(verts[2] + offset)
 
 func _make_viewmodel(dummy_arg):
@@ -126,31 +124,34 @@ func _make_viewmodel(dummy_arg):
 	var start_time = OS.get_ticks_msec()
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	st.set_material(material)
+	st.set_material(BlockTypeLibrary.material)
 	#var offset = Vector3(0,0,0)
 	
 	for coord in $BlockDb.blocks:
+		var block_id = $BlockDb.blocks[coord]
+		var blocktype = BlockTypeLibrary.get_block_type_by_id(block_id)
 		if $BlockDb.isBlockSolid(coord):
+			var uv: Rect2 = blocktype.uv
 			if self.cull_backfaces:
 				if !$BlockDb.isBlockSolid(coord + Vector3.LEFT):
-					_add_mesh_face(st, SIDE.LEFT, coord)
+					_add_mesh_face(st, SIDE.LEFT, coord, uv)
 				if !$BlockDb.isBlockSolid(coord + Vector3.RIGHT):
-					_add_mesh_face(st, SIDE.RIGHT, coord)
+					_add_mesh_face(st, SIDE.RIGHT, coord, uv)
 				if !$BlockDb.isBlockSolid(coord + Vector3.UP):
-					_add_mesh_face(st, SIDE.UP, coord)
+					_add_mesh_face(st, SIDE.UP, coord, uv)
 				if !$BlockDb.isBlockSolid(coord + Vector3.DOWN):
-					_add_mesh_face(st, SIDE.DOWN, coord)
+					_add_mesh_face(st, SIDE.DOWN, coord, uv)
 				if !$BlockDb.isBlockSolid(coord + Vector3.FORWARD):
-					_add_mesh_face(st, SIDE.FORWARD, coord)
+					_add_mesh_face(st, SIDE.FORWARD, coord, uv)
 				if !$BlockDb.isBlockSolid(coord + Vector3.BACK):
-					_add_mesh_face(st, SIDE.BACK, coord)
+					_add_mesh_face(st, SIDE.BACK, coord, uv)
 			else:
-				_add_mesh_face(st, SIDE.LEFT, coord)
-				_add_mesh_face(st, SIDE.RIGHT, coord)
-				_add_mesh_face(st, SIDE.UP, coord)
-				_add_mesh_face(st, SIDE.DOWN, coord)
-				_add_mesh_face(st, SIDE.FORWARD, coord)
-				_add_mesh_face(st, SIDE.BACK, coord)
+				_add_mesh_face(st, SIDE.LEFT, coord, uv)
+				_add_mesh_face(st, SIDE.RIGHT, coord, uv)
+				_add_mesh_face(st, SIDE.UP, coord, uv)
+				_add_mesh_face(st, SIDE.DOWN, coord, uv)
+				_add_mesh_face(st, SIDE.FORWARD, coord, uv)
+				_add_mesh_face(st, SIDE.BACK, coord, uv)
 	
 	st.generate_normals()
 	st.generate_tangents()
@@ -304,7 +305,7 @@ func _make_physmodel():
 		var shapes = _get_optimal_phys_shapes()
 					
 		var algo_time = OS.get_ticks_msec() - start_time
-		print("algo took ", algo_time, " ms")
+		print("shape optimization algo took ", algo_time, " ms")
 		
 		for shape in shapes:
 			_add_phys_block(shape[0], shape[1])
@@ -319,14 +320,18 @@ func _clear_phymodel():
 			c.queue_free()
 
 func _generate_blocks():
+	var wood_id: int = BlockTypeLibrary.get_block_type_by_name("wood").id
+	var stone_id: int = BlockTypeLibrary.get_block_type_by_name("stone").id
 	var blocks = {
-		Vector3(0,0,0): BLOCKTYPE.WOOD,
+		Vector3(0,0,0): wood_id,
 	}
 	var radius = 3
 	for x in range(-radius,radius+1):
-		for y in range(-radius,radius+1):
-			for z in range(-radius,radius+1):
-				blocks[Vector3(x,y,z)] = BLOCKTYPE.WOOD
+		for z in range(-radius,radius+1):
+			for y in range(-radius,0):
+				blocks[Vector3(x,y,z)] = wood_id
+			for y in range(0,radius+1):
+				blocks[Vector3(x,y,z)] = stone_id
 	
 	$BlockDb.blocks = blocks
 	
@@ -336,12 +341,6 @@ func _ready():
 	_make_viewmodel(0)
 	_clear_phymodel()
 	_make_physmodel()
-	print("LEFT: ", Vector3.LEFT)
-	print("RIGHT: ", Vector3.RIGHT)
-	print("UP: ", Vector3.UP)
-	print("DOWN: ", Vector3.DOWN)
-	print("FORWARD: ", Vector3.FORWARD)
-	print("BACK: ", Vector3.BACK)
 	
 	target_point = self.translation
 	target_rot = self.rotation

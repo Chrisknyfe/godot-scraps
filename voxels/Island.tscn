@@ -7,7 +7,6 @@
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 3 )
-uv1_triplanar = true
 
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 1, 1, 1 )

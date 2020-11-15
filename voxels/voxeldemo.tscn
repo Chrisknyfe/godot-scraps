@@ -5,7 +5,7 @@
 [ext_resource path="res://HitMarker.tscn" type="PackedScene" id=3]
 [ext_resource path="res://FPSCounter.gd" type="Script" id=4]
 [ext_resource path="res://Help.gd" type="Script" id=5]
-[ext_resource path="res://dev.png" type="Texture" id=6]
+[ext_resource path="res://lappedstone.png" type="Texture" id=6]
 [ext_resource path="res://Axes.tscn" type="PackedScene" id=7]
 
 [sub_resource type="SpatialMaterial" id=1]

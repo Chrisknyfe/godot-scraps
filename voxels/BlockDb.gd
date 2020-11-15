@@ -19,8 +19,8 @@ func isBlockVisible(coord: Vector3):
 		
 func isBlockSolid(coord: Vector3):
 	if coord in blocks:
-		if blocks[coord] != 0:
-			return true
+		var blocktype = BlockTypeLibrary.get_block_type_by_id(blocks[coord])
+		return blocktype.solid
 	return false
 		
 func setBlocks(newblocks):

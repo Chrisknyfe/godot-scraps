@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Reference",
+"class": "BlockType",
+"language": "GDScript",
+"path": "res://BlockType.gd"
+}, {
 "base": "KinematicBody",
 "class": "Island",
 "language": "GDScript",
 "path": "res://Island.gd"
 } ]
 _global_script_class_icons={
+"BlockType": "",
 "Island": ""
 }
 
@@ -23,6 +29,10 @@ _global_script_class_icons={
 config/name="Voxels"
 run/main_scene="res://voxeldemo.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+BlockTypeLibrary="*res://BlockTypeLibrary.gd"
 
 [input]
 
