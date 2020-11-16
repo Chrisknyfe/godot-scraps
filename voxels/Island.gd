@@ -156,16 +156,21 @@ func _make_viewmodel(dummy_arg):
 	st.generate_normals()
 	st.generate_tangents()
 	
+	# make new mesh
 	var mesh = st.commit()
 	var mi = MeshInstance.new()
-	mi.name = "IslandMesh"
+	mi.name = "IslandMesh_new"
 	mi.mesh = mesh
+	
+	# Add new then remove old to prevent model flashing
+	add_child(mi)
 	
 	var oldnode = $IslandMesh
 	remove_child(oldnode)
 	oldnode.queue_free()
 	
-	add_child(mi)
+	mi.name = "IslandMesh"
+	
 	
 	
 	var elapsed_time = OS.get_ticks_msec() - start_time
