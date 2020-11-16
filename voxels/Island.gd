@@ -323,13 +323,23 @@ func _clear_phymodel():
 			remove_child(c)
 			c.queue_free()
 
+func update_models():
+	if $BlockDb.size() == 0:
+		print("empty island")
+		self.queue_free()
+		return
+	_make_viewmodel_threaded()
+	_clear_phymodel()
+	_make_physmodel()
+	
+
 func _generate_blocks():
 	var wood_id: int = BlockTypeLibrary.get_block_type_by_name("wood").id
 	var stone_id: int = BlockTypeLibrary.get_block_type_by_name("stone").id
 	var blocks = {
 		Vector3(0,0,0): wood_id,
 	}
-	var radius = 3
+	var radius = 1
 	for x in range(-radius,radius+1):
 		for z in range(-radius,radius+1):
 			for y in range(-radius,0):
@@ -342,9 +352,7 @@ func _generate_blocks():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_generate_blocks()
-	_make_viewmodel(0)
-	_clear_phymodel()
-	_make_physmodel()
+	update_models()
 	
 	target_point = self.translation
 	target_rot = self.rotation
@@ -354,10 +362,7 @@ func get_block_position_at(global_coord):
 
 func set_block(coord, blocktype):
 	$BlockDb.setBlock(coord, blocktype)
-	_make_viewmodel_threaded()
-	_clear_phymodel()
-	_make_physmodel()
-
+	update_models()
 
 func move_to(coord):
 	target_point = coord.round()

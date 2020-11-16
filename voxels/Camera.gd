@@ -12,6 +12,7 @@ onready var initial_rotation = PI/2
 
 onready var raycast = $RayCast
 onready var hitmarker_scene = preload("res://HitMarker.tscn")
+onready var island_scene = preload("res://Island.tscn")
 
 var rot_target = Vector3(0,0,0)
 
@@ -162,6 +163,11 @@ func _process(delta):
 			print("Moving island to ", dest)
 			island.move_to(dest)
 
+	if Input.is_action_just_pressed("make_island"):
+		var island = island_scene.instance()
+		island.translate(self.translation)
+		var root = get_tree().get_root()  
+		root.add_child(island)
 
 func _exit_tree():
 	# Restore the mouse cursor upon quitting
