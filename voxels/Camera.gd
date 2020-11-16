@@ -138,11 +138,11 @@ func _process(delta):
 			if breaking:
 				nudge = -nudge
 			var global_pos = (position + nudge)
-			#mark(position, Color.red)
+			mark(position, Color.red)
 			#print("Breaking or placing at ", global_pos)
-			#mark(global_pos, Color.green)
+			mark(global_pos, Color.green)
 			var island_pos = island.get_block_position_at(global_pos)
-			#mark(island_pos, Color.blue, island)
+			mark(island_pos, Color.blue, island)
 			#print("island block pos: ", island_pos)
 			
 			if breaking:
