@@ -103,12 +103,15 @@ func _physics_process(delta):
 	# Friction
 	velocity *= 0.875
 
-	# Apply velocity
-	translation += velocity \
+	# Apply vertical velocity independently
+	translation += Vector3(0, velocity.y, 0)
+	# Apply horizotal velocity
+	translation += Vector3(velocity.x, 0, velocity.z) \
 	.rotated(Vector3(0, 1, 0), rotation.y - initial_rotation) \
 	.rotated(Vector3(1, 0, 0), cos(rotation.y)*rotation.x) \
 	.rotated(Vector3(0, 0, 1), -sin(rotation.y)*rotation.x)
 	
+# debug code, move to a separate library
 func mark(coord, color, parent=null):
 	var marker = hitmarker_scene.instance()
 	marker.translate(coord)
@@ -124,6 +127,7 @@ func _process(delta):
 	var breaking = Input.is_action_just_pressed("break")
 	var placing = Input.is_action_just_pressed("place")
 	
+	# maybeprod
 	if breaking or placing:
 		var collider = raycast.get_collider()
 		var position = raycast.get_collision_point()
@@ -146,6 +150,7 @@ func _process(delta):
 			if placing:
 				island.set_block(island_pos, 1)
 	
+	# nonprod for sure
 	if Input.is_action_just_pressed("move_island"):
 		var collider = raycast.get_collider()
 		var position = raycast.get_collision_point()
