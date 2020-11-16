@@ -4,8 +4,7 @@ class_name Island
 
 enum SIDE {LEFT, RIGHT, UP, DOWN, FORWARD, BACK}
 
-export var material : Material
-export var cull_backfaces : bool = true
+export var cull_hidden_faces : bool = true
 
 var _threads = []
 
@@ -132,7 +131,7 @@ func _make_viewmodel(dummy_arg):
 		var blocktype = BlockTypeLibrary.get_block_type_by_id(block_id)
 		if $BlockDb.isBlockSolid(coord):
 			var uv: Rect2 = blocktype.uv
-			if self.cull_backfaces:
+			if self.cull_hidden_faces:
 				if !$BlockDb.isBlockSolid(coord + Vector3.LEFT):
 					_add_mesh_face(st, SIDE.LEFT, coord, uv)
 				if !$BlockDb.isBlockSolid(coord + Vector3.RIGHT):
