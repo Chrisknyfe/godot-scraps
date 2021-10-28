@@ -51,18 +51,15 @@ func start_workers(num_workers: int = default_worker_thread_count):
 		threadpool[worker_id] = info
 		unlock()
 
-func get_num_workers() -> int:
-	lock()
-	var num = threadpool.size()
-	unlock()
-	return num
-	
 func stop_workers():
 	lock()
 	shutdown = true
 	unlock()
+	
 	# notify all workers
-	var num_workers = get_num_workers()
+	lock()
+	var num_workers = threadpool.size()
+	unlock()
 	for i in range(num_workers):
 		var error = work_ready.post()
 		assert(error == OK)
