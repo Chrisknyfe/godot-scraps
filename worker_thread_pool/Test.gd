@@ -11,10 +11,6 @@ func _ready():
 func test():
 	# You can add more workers at runtime! Just in case.
 	WorkerThreadPool.start_workers(2)
-
-	WorkerThreadPool.add_work(self, "fake_work")
-	WorkerThreadPool.add_work(self, "fake_work", "fake userdata")
-	WorkerThreadPool.add_work(self, "fake_work", "more fake asdfas", "fake_work_done")
 	
 	var number_of_tasks = 108
 	print("Complete the %d tasks to achieve enlightenment" % number_of_tasks)
@@ -26,11 +22,11 @@ func test():
 	
 	print("Completed %d tasks" % completed_tasks)
 	assert(completed_tasks == number_of_tasks)
+
+	WorkerThreadPool.add_work(self, "fake_work")
+	WorkerThreadPool.add_work(self, "fake_work", "fake userdata")
+	WorkerThreadPool.add_work(self, "fake_work", "more fake asdfas", "fake_work_done")
 	
-	print("Shutting down all workers!")
-	WorkerThreadPool.stop_workers()
-	
-	# Wait for prints to flush
 	yield(get_tree().create_timer(1.0), "timeout")
 	get_tree().quit()
 	

@@ -33,6 +33,9 @@ func unlock():
 func _ready():
 	start_workers()
 	
+func _exit_tree():
+	stop_workers()
+	
 func start_workers(num_workers: int = default_worker_thread_count):
 	for i in range(num_workers):
 		lock()
